@@ -42,7 +42,9 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy(Papeis.Empresa, p => p.RequireRole(Papeis.Empresa))
-    .AddPolicy(Papeis.Profissional, p => p.RequireRole(Papeis.Profissional));
+    .AddPolicy(Papeis.Profissional, p => p.RequireRole(Papeis.Profissional))
+    .AddPolicy(Papeis.Administrativo, p => p.RequireRole(Papeis.Administrativo))
+    .AddPolicy(Papeis.Recrutador, p => p.RequireRole(Papeis.Empresa, Papeis.Administrativo));
 
 builder.Services.AddLimitesDeAcesso(builder.Configuration);
 builder.Services.AddProblemDetails();
@@ -87,6 +89,7 @@ app.MapGet("/health", () => TypedResults.Ok("ok")).ExcludeFromDescription();
 app.MapAuth();
 app.MapVagas();
 app.MapMinhaArea();
+app.MapGestao();
 
 app.Run();
 

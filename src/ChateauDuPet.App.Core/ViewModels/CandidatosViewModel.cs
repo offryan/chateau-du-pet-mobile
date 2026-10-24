@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 namespace ChateauDuPet.App.Core.ViewModels;
 
 /// <summary>Candidatos de uma vaga, visto pela empresa que a publicou.</summary>
-public partial class CandidatosViewModel(IChateauApi api, IPlataforma plataforma) : ViewModelBase, IAoAparecer
+public partial class CandidatosViewModel(IChateauApi api, INavegacao navegacao, IPlataforma plataforma) : ViewModelBase, IAoAparecer
 {
     private int _idVaga;
     private bool _carregou;
@@ -41,6 +41,10 @@ public partial class CandidatosViewModel(IChateauApi api, IPlataforma plataforma
             OnPropertyChanged(nameof(SemCandidatos));
         }
     }
+
+    [RelayCommand]
+    private Task AbrirCurriculoAsync(CandidatoResumo? candidato) =>
+        candidato is null ? Task.CompletedTask : navegacao.AbrirCurriculoAsync(candidato.IdProfissional);
 
     [RelayCommand]
     private Task EnviarEmailAsync(CandidatoResumo? candidato) => candidato is null

@@ -16,8 +16,8 @@
 
     <ApplicationTitle>Chateau Du Pet</ApplicationTitle>
     <ApplicationId>br.com.chateaudupet.app</ApplicationId>
-    <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
-    <ApplicationVersion>2</ApplicationVersion>
+    <ApplicationDisplayVersion>2.1</ApplicationDisplayVersion>
+    <ApplicationVersion>3</ApplicationVersion>
 
     <WindowsPackageType>None</WindowsPackageType>
 

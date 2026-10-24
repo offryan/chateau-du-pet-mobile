@@ -18,6 +18,19 @@ public interface IChateauApi
     Task<PerfilProfissional> MeuPerfilAsync(CancellationToken ct = default);
     Task<IReadOnlyList<VagaResumo>> MinhasVagasAsync(CancellationToken ct = default);
     Task<IReadOnlyList<CandidatoResumo>> CandidatosDaVagaAsync(int idVaga, CancellationToken ct = default);
+
+    // Gestão (empresa)
+    Task<VagaDetalhe> PublicarVagaAsync(VagaFormulario vaga, CancellationToken ct = default);
+    Task<VagaDetalhe> EditarVagaAsync(int idVaga, VagaFormulario vaga, CancellationToken ct = default);
+    Task ExcluirMinhaVagaAsync(int idVaga, CancellationToken ct = default);
+    Task<PerfilProfissional> CurriculoAsync(int idProfissional, CancellationToken ct = default);
+
+    // Gestão (administrador)
+    Task<IReadOnlyList<ProfissionalAdmin>> ListarProfissionaisAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<EmpresaAdmin>> ListarEmpresasAsync(CancellationToken ct = default);
+    Task ExcluirProfissionalAsync(int id, CancellationToken ct = default);
+    Task ExcluirEmpresaAsync(int id, CancellationToken ct = default);
+    Task ExcluirVagaComoAdminAsync(int idVaga, CancellationToken ct = default);
 }
 
 /// <summary>
@@ -65,6 +78,47 @@ public class ChateauApi(HttpClient http, Sessao sessao) : IChateauApi
 
     public async Task<IReadOnlyList<CandidatoResumo>> CandidatosDaVagaAsync(int idVaga, CancellationToken ct = default) =>
         await ObterAsync($"api/me/vagas/{idVaga}/candidatos", Json.ListCandidatoResumo, ct);
+
+    public async Task<VagaDetalhe> PublicarVagaAsync(VagaFormulario vaga, CancellationToken ct = default)
+    {
+        using var resposta = await EnviarAsync(HttpMethod.Post, "api/me/vagas", ct, JsonContent.Create(vaga, Json.VagaFormulario));
+        return await LerAsync(resposta, Json.VagaDetalhe, ct);
+    }
+
+    public async Task<VagaDetalhe> EditarVagaAsync(int idVaga, VagaFormulario vaga, CancellationToken ct = default)
+    {
+        using var resposta = await EnviarAsync(HttpMethod.Put, $"api/me/vagas/{idVaga}", ct, JsonContent.Create(vaga, Json.VagaFormulario));
+        return await LerAsync(resposta, Json.VagaDetalhe, ct);
+    }
+
+    public async Task ExcluirMinhaVagaAsync(int idVaga, CancellationToken ct = default)
+    {
+        using var _ = await EnviarAsync(HttpMethod.Delete, $"api/me/vagas/{idVaga}", ct);
+    }
+
+    public Task<PerfilProfissional> CurriculoAsync(int idProfissional, CancellationToken ct = default) =>
+        ObterAsync($"api/profissionais/{idProfissional}/curriculo", Json.PerfilProfissional, ct);
+
+    public async Task<IReadOnlyList<ProfissionalAdmin>> ListarProfissionaisAsync(CancellationToken ct = default) =>
+        await ObterAsync("api/admin/profissionais", Json.ListProfissionalAdmin, ct);
+
+    public async Task<IReadOnlyList<EmpresaAdmin>> ListarEmpresasAsync(CancellationToken ct = default) =>
+        await ObterAsync("api/admin/empresas", Json.ListEmpresaAdmin, ct);
+
+    public async Task ExcluirProfissionalAsync(int id, CancellationToken ct = default)
+    {
+        using var _ = await EnviarAsync(HttpMethod.Delete, $"api/admin/profissionais/{id}", ct);
+    }
+
+    public async Task ExcluirEmpresaAsync(int id, CancellationToken ct = default)
+    {
+        using var _ = await EnviarAsync(HttpMethod.Delete, $"api/admin/empresas/{id}", ct);
+    }
+
+    public async Task ExcluirVagaComoAdminAsync(int idVaga, CancellationToken ct = default)
+    {
+        using var _ = await EnviarAsync(HttpMethod.Delete, $"api/admin/vagas/{idVaga}", ct);
+    }
 
     private async Task<T> ObterAsync<T>(string url, JsonTypeInfo<T> tipo, CancellationToken ct)
     {

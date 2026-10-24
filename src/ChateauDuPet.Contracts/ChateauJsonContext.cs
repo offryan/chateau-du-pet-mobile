@@ -16,6 +16,9 @@ namespace ChateauDuPet.Contracts;
 [JsonSerializable(typeof(List<CandidaturaResumo>))]
 [JsonSerializable(typeof(List<CandidatoResumo>))]
 [JsonSerializable(typeof(PerfilProfissional))]
+[JsonSerializable(typeof(VagaFormulario))]
+[JsonSerializable(typeof(List<ProfissionalAdmin>))]
+[JsonSerializable(typeof(List<EmpresaAdmin>))]
 [JsonSerializable(typeof(ProblemaApi))]
 public partial class ChateauJsonContext : JsonSerializerContext;
 

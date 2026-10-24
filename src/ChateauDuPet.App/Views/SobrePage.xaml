@@ -23,7 +23,10 @@
                 </BoxView>
             </Grid>
 
-            <VerticalStackLayout Padding="24,0,24,32" Spacing="16">
+            <VerticalStackLayout
+                Padding="24,0,24,32"
+                MaximumWidthRequest="{StaticResource LarguraMaxima}"
+                Spacing="16">
                 <Image
                     Margin="0,-48,0,0"
                     HeightRequest="96"

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PaginaBase
+    x:Class="ChateauDuPet.App.Views.CurriculoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:comp="clr-namespace:ChateauDuPet.App.Views.Componentes"
+    xmlns:v="clr-namespace:ChateauDuPet.App.Views"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="Currículo"
+    x:DataType="vm:CurriculoViewModel">
+
+    <Grid>
+        <ScrollView IsVisible="{Binding MostrarConteudo}">
+            <VerticalStackLayout
+                Padding="16,8,16,32"
+                MaximumWidthRequest="{StaticResource LarguraMaxima}"
+                Spacing="16">
+
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                    <Border
+                        HeightRequest="56"
+                        Style="{StaticResource Avatar}"
+                        WidthRequest="56">
+                        <Label Style="{StaticResource AvatarTexto}" Text="{Binding Iniciais}" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Style="{StaticResource Titulo}" Text="{Binding Perfil.Nome}" />
+                        <Label Style="{StaticResource Legenda}" Text="{Binding Perfil.Formacao}" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <HorizontalStackLayout Spacing="8">
+                    <Button
+                        Command="{Binding EnviarEmailCommand}"
+                        Style="{StaticResource BotaoPequeno}"
+                        Text="Enviar e-mail" />
+                    <Button
+                        Command="{Binding LigarCommand}"
+                        Style="{StaticResource BotaoPequenoSecundario}"
+                        Text="Ligar" />
+                </HorizontalStackLayout>
+
+                <comp:CurriculoView BindingContext="{Binding Perfil}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <comp:EstadoDaTela />
+    </Grid>
+</v:PaginaBase>

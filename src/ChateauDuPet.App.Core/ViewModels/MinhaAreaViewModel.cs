@@ -7,7 +7,8 @@ namespace ChateauDuPet.App.Core.ViewModels;
 
 /// <summary>
 /// Aba "Minha área": convite para entrar (visitante), currículo e candidaturas
-/// (profissional) ou vagas publicadas (empresa).
+/// (profissional), gestão das vagas publicadas (empresa) ou atalho para o painel
+/// de administração (administrador).
 /// </summary>
 public partial class MinhaAreaViewModel : ViewModelBase, IAoAparecer
 {
@@ -17,13 +18,16 @@ public partial class MinhaAreaViewModel : ViewModelBase, IAoAparecer
     private readonly IPlataforma _plataforma;
     private (bool Carregada, int? IdUsuario) _carregadaPara;
 
-    public MinhaAreaViewModel(IChateauApi api, Sessao sessao, INavegacao navegacao, IPlataforma plataforma)
+    public MinhaAreaViewModel(IChateauApi api, Sessao sessao, INavegacao navegacao, IPlataforma plataforma,
+        AlteracoesDeDados alteracoes)
     {
         _api = api;
         _sessao = sessao;
         _navegacao = navegacao;
         _plataforma = plataforma;
         _sessao.Alterada += (_, _) => AtualizarTipo();
+        // Vaga publicada, editada ou excluída: recarrega quando a aba voltar a aparecer
+        alteracoes.VagasAlteradas += (_, _) => _carregadaPara = default;
     }
 
     public UsuarioInfo? Usuario => _sessao.Usuario;
@@ -100,6 +104,16 @@ public partial class MinhaAreaViewModel : ViewModelBase, IAoAparecer
     [RelayCommand]
     private Task AbrirCandidatosAsync(VagaResumo? vaga) =>
         vaga is null ? Task.CompletedTask : _navegacao.AbrirCandidatosAsync(vaga);
+
+    [RelayCommand]
+    private Task PublicarVagaAsync() => _navegacao.AbrirFormularioDeVagaAsync(null);
+
+    [RelayCommand]
+    private Task EditarVagaAsync(VagaResumo? vaga) =>
+        vaga is null ? Task.CompletedTask : _navegacao.AbrirFormularioDeVagaAsync(vaga.Id);
+
+    [RelayCommand]
+    private Task AbrirAdministracaoAsync() => _navegacao.AbrirAdministracaoAsync();
 
     private void AtualizarTipo()
     {

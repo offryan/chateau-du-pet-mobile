@@ -133,6 +133,55 @@ public class VagasRepositorio(NpgsqlDataSource banco)
             """, new { idVaga }, cancellationToken: ct))).AsList();
     }
 
+    /// <summary>Publica uma vaga da empresa e devolve o id criado. O formulário já deve estar validado.</summary>
+    public async Task<int> PublicarAsync(int idEmpresa, VagaFormulario vaga, CancellationToken ct)
+    {
+        await using var conn = banco.CreateConnection();
+        return await conn.ExecuteScalarAsync<int>(new CommandDefinition("""
+            INSERT INTO Vaga (NmVaga, DsExperiencia, DsTipoRegistro, DsDescricao, DsSexo, Validade, FKEmpresa)
+            VALUES (@Titulo, @Experiencia, @TipoRegistro, @Descricao, @Sexo, @Validade, @idEmpresa)
+            RETURNING IdVaga
+            """, ParametrosDaVaga(vaga, new { idEmpresa }), cancellationToken: ct));
+    }
+
+    /// <summary>Altera a vaga só se ela pertencer à empresa; retorna false se não for dela ou não existir.</summary>
+    public async Task<bool> EditarAsync(int idVaga, int idEmpresa, VagaFormulario vaga, CancellationToken ct)
+    {
+        await using var conn = banco.CreateConnection();
+        return await conn.ExecuteAsync(new CommandDefinition("""
+            UPDATE Vaga SET NmVaga = @Titulo, DsExperiencia = @Experiencia, DsTipoRegistro = @TipoRegistro,
+                   DsDescricao = @Descricao, DsSexo = @Sexo, Validade = @Validade
+            WHERE IdVaga = @idVaga AND FKEmpresa = @idEmpresa
+            """, ParametrosDaVaga(vaga, new { idVaga, idEmpresa }), cancellationToken: ct)) > 0;
+    }
+
+    /// <summary>Exclui a vaga (e as candidaturas, em cascata). Com idEmpresa = null, é o administrador excluindo qualquer vaga.</summary>
+    public async Task<bool> ExcluirAsync(int idVaga, int? idEmpresa, CancellationToken ct)
+    {
+        await using var conn = banco.CreateConnection();
+        return await conn.ExecuteAsync(new CommandDefinition(
+            "DELETE FROM Vaga WHERE IdVaga = @idVaga AND (@idEmpresa::int IS NULL OR FKEmpresa = @idEmpresa)",
+            new { idVaga, idEmpresa }, cancellationToken: ct)) > 0;
+    }
+
+    /// <summary>A empresa só vê o currículo de quem se candidatou a alguma vaga dela.</summary>
+    public async Task<bool> EhCandidatoDaEmpresaAsync(int idProfissional, int idEmpresa, CancellationToken ct)
+    {
+        await using var conn = banco.CreateConnection();
+        return await conn.ExecuteScalarAsync<bool>(new CommandDefinition("""
+            SELECT EXISTS (
+                SELECT 1 FROM Candidatos c JOIN Vaga v ON v.IdVaga = c.FKVaga
+                WHERE c.FKProfissional = @idProfissional AND v.FKEmpresa = @idEmpresa)
+            """, new { idProfissional, idEmpresa }, cancellationToken: ct));
+    }
+
+    private static DynamicParameters ParametrosDaVaga(VagaFormulario vaga, object chaves)
+    {
+        var parametros = new DynamicParameters(chaves);
+        parametros.AddDynamicParams(new { vaga.Titulo, vaga.Experiencia, vaga.TipoRegistro, vaga.Descricao, vaga.Sexo, vaga.Validade });
+        return parametros;
+    }
+
     /// <summary>Remove espaços e escapa os curingas do ILIKE, para "%" ou "_" serem buscados literalmente.</summary>
     internal static string? TermoDeBusca(string? busca) =>
         string.IsNullOrWhiteSpace(busca)

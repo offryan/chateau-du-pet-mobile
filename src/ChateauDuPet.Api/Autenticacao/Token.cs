@@ -24,6 +24,10 @@ public static class Papeis
 {
     public const string Empresa = nameof(TipoUsuario.Empresa);
     public const string Profissional = nameof(TipoUsuario.Profissional);
+    public const string Administrativo = nameof(TipoUsuario.Administrativo);
+
+    /// <summary>Política de quem pode ver currículos: empresas (dos próprios candidatos) e administradores.</summary>
+    public const string Recrutador = "Recrutador";
 }
 
 public class TokenService(IOptions<JwtOpcoes> opcoes, TimeProvider relogio)

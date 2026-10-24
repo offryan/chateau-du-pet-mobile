@@ -5,12 +5,23 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ChateauDuPet.App.Core.ViewModels;
 
-public partial class VagasViewModel(IChateauApi api, INavegacao navegacao) : ViewModelBase, IAoAparecer
+public partial class VagasViewModel : ViewModelBase, IAoAparecer
 {
+    private readonly IChateauApi _api;
+    private readonly INavegacao _navegacao;
+
     private CancellationTokenSource? _buscaPendente;
     private bool _carregouUmaVez;
     private int _ultimaConsulta;
     private string _buscaDosResultados = "";
+
+    public VagasViewModel(IChateauApi api, INavegacao navegacao, AlteracoesDeDados alteracoes)
+    {
+        _api = api;
+        _navegacao = navegacao;
+        // Vaga publicada, editada ou excluída na gestão: a lista recarrega quando a aba voltar a aparecer
+        alteracoes.VagasAlteradas += (_, _) => _carregouUmaVez = false;
+    }
 
     /// <summary>Espera após a última tecla antes de buscar, para não chamar a API a cada letra.</summary>
     public TimeSpan AtrasoDaBusca { get; set; } = TimeSpan.FromMilliseconds(400);
@@ -39,7 +50,7 @@ public partial class VagasViewModel(IChateauApi api, INavegacao navegacao) : Vie
         var consulta = ++_ultimaConsulta;
         await CarregarComIndicadorAsync(async () =>
         {
-            var vagas = await api.ListarVagasAsync(busca);
+            var vagas = await _api.ListarVagasAsync(busca);
             // Uma busca mais nova já foi disparada: descarta este resultado atrasado
             if (consulta != _ultimaConsulta) return;
             _buscaDosResultados = busca;
@@ -50,7 +61,7 @@ public partial class VagasViewModel(IChateauApi api, INavegacao navegacao) : Vie
 
     [RelayCommand]
     private Task AbrirVagaAsync(VagaResumo? vaga) =>
-        vaga is null ? Task.CompletedTask : navegacao.AbrirVagaAsync(vaga.Id);
+        vaga is null ? Task.CompletedTask : _navegacao.AbrirVagaAsync(vaga.Id);
 
     partial void OnBuscaChanged(string value)
     {

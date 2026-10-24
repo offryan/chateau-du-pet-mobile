@@ -75,6 +75,37 @@
         <Setter Property="BorderWidth" Value="1.5" />
     </Style>
 
+    <!-- Botões compactos, para ações dentro de cards (ver candidatos, editar, excluir) -->
+    <Style x:Key="BotaoPequeno" TargetType="Button">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Padding" Value="14,6" />
+        <Setter Property="MinimumHeightRequest" Value="36" />
+    </Style>
+
+    <Style x:Key="BotaoPequenoSecundario" TargetType="Button" BasedOn="{StaticResource BotaoPequeno}">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="BorderWidth" Value="1.5" />
+    </Style>
+
+    <!-- Ações que apagam dados -->
+    <Style x:Key="BotaoPerigo" TargetType="Button" BasedOn="{StaticResource BotaoPequeno}">
+        <Setter Property="TextColor" Value="{StaticResource Vermelho}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="{StaticResource Vermelho}" />
+        <Setter Property="BorderWidth" Value="1.5" />
+    </Style>
+
+    <!-- Abas internas de uma tela (ex.: seções do painel de administração) -->
+    <Style x:Key="Segmento" TargetType="Button" BasedOn="{StaticResource BotaoPequenoSecundario}">
+        <Setter Property="CornerRadius" Value="18" />
+    </Style>
+
+    <!-- Largura máxima do conteúdo: no celular não faz diferença; no PC evita linhas esticadas -->
+    <x:Double x:Key="LarguraMaxima">760</x:Double>
+
     <!-- Botão só com texto, para ações discretas (cancelar, sair) -->
     <Style x:Key="BotaoTexto" TargetType="Button">
         <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextoSuave}" />
@@ -89,6 +120,23 @@
         <Setter Property="PlaceholderColor" Value="{toolkit:AppThemeResource TextoSuave}" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="16" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="MinimumHeightRequest" Value="48" />
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Texto}" />
+        <Setter Property="PlaceholderColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <Style TargetType="Picker">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Texto}" />
+        <Setter Property="TitleColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="MinimumHeightRequest" Value="48" />
     </Style>

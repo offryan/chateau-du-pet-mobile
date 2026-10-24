@@ -58,6 +58,48 @@ public class ApiFalsa : IChateauApi
     public Task<PerfilProfissional> MeuPerfilAsync(CancellationToken ct = default) => Task.FromResult(Perfil!);
     public Task<IReadOnlyList<VagaResumo>> MinhasVagasAsync(CancellationToken ct = default) => Task.FromResult(MinhasVagas);
     public Task<IReadOnlyList<CandidatoResumo>> CandidatosDaVagaAsync(int idVaga, CancellationToken ct = default) => Task.FromResult(Candidatos);
+
+    // Gestão: registra o que foi enviado; AoPublicar/AoEditar/AoExcluir permitem simular falhas
+    public List<VagaFormulario> Publicadas { get; } = [];
+    public List<(int Id, VagaFormulario Vaga)> Editadas { get; } = [];
+    public List<string> Exclusoes { get; } = [];
+    public Func<Task> AoPublicar { get; set; } = () => Task.CompletedTask;
+    public Func<string, Task> AoExcluir { get; set; } = _ => Task.CompletedTask;
+    public Dictionary<int, PerfilProfissional> Curriculos { get; } = [];
+    public IReadOnlyList<ProfissionalAdmin> ProfissionaisAdmin { get; set; } = [];
+    public IReadOnlyList<EmpresaAdmin> EmpresasAdmin { get; set; } = [];
+
+    public async Task<VagaDetalhe> PublicarVagaAsync(VagaFormulario vaga, CancellationToken ct = default)
+    {
+        await AoPublicar();
+        Publicadas.Add(vaga);
+        return Dados.Detalhe(99);
+    }
+
+    public Task<VagaDetalhe> EditarVagaAsync(int idVaga, VagaFormulario vaga, CancellationToken ct = default)
+    {
+        Editadas.Add((idVaga, vaga));
+        return Task.FromResult(Dados.Detalhe(idVaga));
+    }
+
+    public Task ExcluirMinhaVagaAsync(int idVaga, CancellationToken ct = default) => Excluir($"minha-vaga/{idVaga}");
+
+    public Task<PerfilProfissional> CurriculoAsync(int idProfissional, CancellationToken ct = default) =>
+        Curriculos.TryGetValue(idProfissional, out var perfil)
+            ? Task.FromResult(perfil)
+            : throw new ApiException("Não encontramos o que você procurou. Talvez tenha sido removido.", 404);
+
+    public Task<IReadOnlyList<ProfissionalAdmin>> ListarProfissionaisAsync(CancellationToken ct = default) => Task.FromResult(ProfissionaisAdmin);
+    public Task<IReadOnlyList<EmpresaAdmin>> ListarEmpresasAsync(CancellationToken ct = default) => Task.FromResult(EmpresasAdmin);
+    public Task ExcluirProfissionalAsync(int id, CancellationToken ct = default) => Excluir($"profissional/{id}");
+    public Task ExcluirEmpresaAsync(int id, CancellationToken ct = default) => Excluir($"empresa/{id}");
+    public Task ExcluirVagaComoAdminAsync(int idVaga, CancellationToken ct = default) => Excluir($"vaga/{idVaga}");
+
+    private async Task Excluir(string alvo)
+    {
+        await AoExcluir(alvo);
+        Exclusoes.Add(alvo);
+    }
 }
 
 public class NavegacaoFalsa : INavegacao
@@ -68,6 +110,9 @@ public class NavegacaoFalsa : INavegacao
     public Task AbrirCandidatosAsync(VagaResumo vaga) => Registrar($"candidatos/{vaga.Id}");
     public Task AbrirLoginAsync() => Registrar("login");
     public Task VoltarAsync() => Registrar("voltar");
+    public Task AbrirFormularioDeVagaAsync(int? idVaga) => Registrar(idVaga is null ? "vaga/nova" : $"vaga/{idVaga}/editar");
+    public Task AbrirCurriculoAsync(int idProfissional) => Registrar($"curriculo/{idProfissional}");
+    public Task AbrirAdministracaoAsync() => Registrar("administracao");
 
     private Task Registrar(string rota)
     {

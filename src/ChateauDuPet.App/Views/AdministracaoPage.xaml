@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PaginaBase
+    x:Class="ChateauDuPet.App.Views.AdministracaoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:ChateauDuPet.Contracts;assembly=ChateauDuPet.Contracts"
+    xmlns:comp="clr-namespace:ChateauDuPet.App.Views.Componentes"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:v="clr-namespace:ChateauDuPet.App.Views"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="Administração"
+    x:DataType="vm:AdministracaoViewModel">
+
+    <Grid
+        MaximumWidthRequest="{StaticResource LarguraMaxima}"
+        RowDefinitions="Auto,Auto,*">
+
+        <!-- Seções: botão com contorno; a seção aberta fica preenchida (gatilhos abaixo) -->
+        <ScrollView
+            Padding="16,8,16,0"
+            HorizontalScrollBarVisibility="Never"
+            Orientation="Horizontal">
+            <HorizontalStackLayout Spacing="8">
+                <Button
+                    Command="{Binding MostrarSecaoCommand}"
+                    CommandParameter="{x:Static vm:SecaoDaAdministracao.Profissionais}"
+                    Style="{StaticResource Segmento}"
+                    Text="{Binding TituloProfissionais}">
+                    <Button.Triggers>
+                        <DataTrigger
+                            Binding="{Binding EmProfissionais}"
+                            TargetType="Button"
+                            Value="True">
+                            <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource Destaque}" />
+                            <Setter Property="TextColor" Value="{StaticResource Branco}" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button
+                    Command="{Binding MostrarSecaoCommand}"
+                    CommandParameter="{x:Static vm:SecaoDaAdministracao.Empresas}"
+                    Style="{StaticResource Segmento}"
+                    Text="{Binding TituloEmpresas}">
+                    <Button.Triggers>
+                        <DataTrigger
+                            Binding="{Binding EmEmpresas}"
+                            TargetType="Button"
+                            Value="True">
+                            <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource Destaque}" />
+                            <Setter Property="TextColor" Value="{StaticResource Branco}" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button
+                    Command="{Binding MostrarSecaoCommand}"
+                    CommandParameter="{x:Static vm:SecaoDaAdministracao.Vagas}"
+                    Style="{StaticResource Segmento}"
+                    Text="{Binding TituloVagas}">
+                    <Button.Triggers>
+                        <DataTrigger
+                            Binding="{Binding EmVagas}"
+                            TargetType="Button"
+                            Value="True">
+                            <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource Destaque}" />
+                            <Setter Property="TextColor" Value="{StaticResource Branco}" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- Busca dentro da seção aberta -->
+        <Border
+            Grid.Row="1"
+            Margin="16,12,16,4"
+            Padding="4,0"
+            Style="{StaticResource Campo}">
+            <SearchBar
+                Placeholder="Buscar por nome, e-mail ou cidade"
+                SemanticProperties.Hint="Filtra a lista da seção aberta"
+                Text="{Binding Filtro}" />
+        </Border>
+
+        <Grid Grid.Row="2" IsVisible="{Binding MostrarConteudo}">
+            <!-- Profissionais -->
+            <CollectionView
+                IsVisible="{Binding EmProfissionais}"
+                ItemsSource="{Binding Profissionais}"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.Header>
+                    <BoxView HeightRequest="8" Color="Transparent" />
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="c:ProfissionalAdmin">
+                        <Border Margin="16,0" Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="10">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Nome}" />
+                                    <Label Style="{StaticResource Legenda}" Text="{Binding Email}" />
+                                    <Label Style="{StaticResource Legenda}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="@" />
+                                                <Span Text="{Binding Usuario}" />
+                                                <Span Text=" · " />
+                                                <Span Text="{Binding Telefone, Converter={StaticResource Telefone}}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                                <HorizontalStackLayout Spacing="8">
+                                    <Button
+                                        Command="{Binding VerCurriculoCommand, Source={RelativeSource AncestorType={x:Type vm:AdministracaoViewModel}}, x:DataType=vm:AdministracaoViewModel}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource BotaoPequenoSecundario}"
+                                        Text="Ver currículo" />
+                                    <Button
+                                        Command="{Binding ExcluirProfissionalCommand, Source={RelativeSource AncestorType={x:Type vm:AdministracaoViewModel}}, x:DataType=vm:AdministracaoViewModel}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource BotaoPerigo}"
+                                        Text="Excluir" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="16" Color="Transparent" />
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <!-- Empresas -->
+            <CollectionView
+                IsVisible="{Binding EmEmpresas}"
+                ItemsSource="{Binding Empresas}"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.Header>
+                    <BoxView HeightRequest="8" Color="Transparent" />
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="c:EmpresaAdmin">
+                        <Border Margin="16,0" Style="{StaticResource Card}">
+                            <Grid
+                                ColumnDefinitions="*,Auto"
+                                RowDefinitions="Auto,Auto"
+                                RowSpacing="10">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Nome}" />
+                                    <Label Style="{StaticResource Legenda}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Recrutador}" />
+                                                <Span Text=" · " />
+                                                <Span Text="{Binding Email}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label
+                                        IsVisible="{Binding Cnpj, Converter={StaticResource TemTexto}}"
+                                        Style="{StaticResource Legenda}"
+                                        Text="{Binding Cnpj, StringFormat='CNPJ {0}'}" />
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="1"
+                                    Style="{StaticResource Chip}"
+                                    VerticalOptions="Start">
+                                    <Label Style="{StaticResource ChipTexto}" Text="{Binding TotalVagas, StringFormat='{0} vagas'}" />
+                                </Border>
+                                <Button
+                                    Grid.Row="1"
+                                    Command="{Binding ExcluirEmpresaCommand, Source={RelativeSource AncestorType={x:Type vm:AdministracaoViewModel}}, x:DataType=vm:AdministracaoViewModel}"
+                                    CommandParameter="{Binding .}"
+                                    HorizontalOptions="Start"
+                                    Style="{StaticResource BotaoPerigo}"
+                                    Text="Excluir" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="16" Color="Transparent" />
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <!-- Vagas -->
+            <CollectionView
+                IsVisible="{Binding EmVagas}"
+                ItemsSource="{Binding Vagas}"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.Header>
+                    <BoxView HeightRequest="8" Color="Transparent" />
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="c:VagaResumo">
+                        <Border Margin="16,0" Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="10">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Titulo}" />
+                                    <Label Style="{StaticResource Legenda}" Text="{Binding Empresa}" />
+                                    <Label Style="{StaticResource Legenda}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding PublicadaEm, Converter={StaticResource TempoRelativo}, StringFormat='Publicada {0}'}" />
+                                                <Span Text=" · " />
+                                                <Span Text="{Binding TotalCandidatos, StringFormat='{0} candidatos'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                                <HorizontalStackLayout Spacing="8">
+                                    <Button
+                                        Command="{Binding AbrirVagaCommand, Source={RelativeSource AncestorType={x:Type vm:AdministracaoViewModel}}, x:DataType=vm:AdministracaoViewModel}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource BotaoPequenoSecundario}"
+                                        Text="Ver vaga" />
+                                    <Button
+                                        Command="{Binding ExcluirVagaCommand, Source={RelativeSource AncestorType={x:Type vm:AdministracaoViewModel}}, x:DataType=vm:AdministracaoViewModel}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource BotaoPerigo}"
+                                        Text="Excluir" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="16" Color="Transparent" />
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <!-- Busca sem resultado -->
+            <Label
+                Margin="32"
+                HorizontalTextAlignment="Center"
+                IsVisible="{Binding SemResultados}"
+                Style="{StaticResource Legenda}"
+                Text="Nada encontrado nesta seção."
+                VerticalOptions="Start" />
+        </Grid>
+
+        <comp:EstadoDaTela Grid.Row="2" />
+    </Grid>
+</v:PaginaBase>

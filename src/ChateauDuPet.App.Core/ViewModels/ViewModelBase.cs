@@ -86,6 +86,29 @@ public abstract partial class ViewModelBase : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Roda uma ação do usuário (salvar, excluir). Diferente do carregamento, uma falha não
+    /// esconde a tela: vira um aviso, e a sessão expirada leva ao login. Retorna se deu certo.
+    /// </summary>
+    protected static async Task<bool> ExecutarAcaoAsync(Func<Task> acao, IPlataforma plataforma, INavegacao navegacao)
+    {
+        try
+        {
+            await acao();
+            return true;
+        }
+        catch (SessaoExpiradaException ex)
+        {
+            await plataforma.MostrarAvisoAsync(ex.Message);
+            await navegacao.AbrirLoginAsync();
+        }
+        catch (ApiException ex)
+        {
+            await plataforma.MostrarAvisoAsync(ex.Message);
+        }
+        return false;
+    }
+
     private async Task AvisarSeDemorarAsync(CancellationToken ct)
     {
         try

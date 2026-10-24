@@ -10,11 +10,12 @@ public abstract class TesteDeViewModel
     protected readonly NavegacaoFalsa Navegacao = new();
     protected readonly PlataformaFalsa Plataforma = new();
     protected readonly Sessao Sessao = new(new ArmazenamentoEmMemoria(), TimeProvider.System);
+    protected readonly AlteracoesDeDados Alteracoes = new();
 }
 
 public class VagasViewModelTests : TesteDeViewModel
 {
-    private VagasViewModel Criar() => new(Api, Navegacao) { AtrasoDaBusca = TimeSpan.Zero };
+    private VagasViewModel Criar() => new(Api, Navegacao, Alteracoes) { AtrasoDaBusca = TimeSpan.Zero };
 
     [Fact]
     public async Task Carrega_as_vagas_ao_aparecer_apenas_na_primeira_vez()
@@ -309,7 +310,7 @@ public class LoginViewModelTests : TesteDeViewModel
 
 public class MinhaAreaViewModelTests : TesteDeViewModel
 {
-    private MinhaAreaViewModel Criar() => new(Api, Sessao, Navegacao, Plataforma);
+    private MinhaAreaViewModel Criar() => new(Api, Sessao, Navegacao, Plataforma, Alteracoes);
 
     private static readonly PerfilProfissional Perfil = new(1, "Jucelino Silva", "jucelino@exemplo.com", "11911290115",
         "Apaixonado por animais", "Superior Completo", "São Paulo", "SP",
@@ -404,7 +405,7 @@ public class CandidatosViewModelTests : TesteDeViewModel
     public async Task Lista_candidatos_e_abre_email_com_assunto_da_vaga()
     {
         Api.Candidatos = [new CandidatoResumo(1, "Jucelino Silva", "jucelino@exemplo.com", "Superior Completo", new DateTime(2026, 10, 20))];
-        var vm = new CandidatosViewModel(Api, Plataforma);
+        var vm = new CandidatosViewModel(Api, Navegacao, Plataforma);
         vm.Abrir(1, "Médico Veterinário");
 
         await vm.AoAparecerAsync();

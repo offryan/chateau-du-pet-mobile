@@ -6,8 +6,15 @@ namespace ChateauDuPet.App.Servicos;
 
 public class PlataformaMaui : IPlataforma
 {
-    public Task MostrarAvisoAsync(string mensagem) =>
-        MainThread.InvokeOnMainThreadAsync(() => Toast.Make(mensagem, ToastDuration.Long).Show());
+    public Task MostrarAvisoAsync(string mensagem) => MainThread.InvokeOnMainThreadAsync(async () =>
+    {
+        // No Windows o Toast vira notificação do sistema, que exige o app instalado como pacote;
+        // no app avulso (zip) o aviso aparece como um diálogo simples
+        if (DeviceInfo.Platform == DevicePlatform.WinUI)
+            await Shell.Current.DisplayAlertAsync("Chateau Du Pet", mensagem, "OK");
+        else
+            await Toast.Make(mensagem, ToastDuration.Long).Show();
+    });
 
     public Task<bool> ConfirmarAsync(string titulo, string mensagem, string aceitar, string cancelar) =>
         Shell.Current.DisplayAlertAsync(titulo, mensagem, aceitar, cancelar);
@@ -19,10 +26,12 @@ public class PlataformaMaui : IPlataforma
     {
         try
         {
-            if (url.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase))
-                await Launcher.Default.OpenAsync(new Uri(url));
+            var uri = new Uri(url);
+            // Páginas abrem no navegador; e-mail (mailto:) e telefone (tel:) no app padrão do aparelho
+            if (uri.Scheme is "http" or "https")
+                await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
             else
-                await Browser.Default.OpenAsync(new Uri(url), BrowserLaunchMode.SystemPreferred);
+                await Launcher.Default.OpenAsync(uri);
         }
         catch (Exception)
         {

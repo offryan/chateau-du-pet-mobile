@@ -11,7 +11,10 @@
     Shell.PresentationMode="ModalAnimated">
 
     <ScrollView>
-        <VerticalStackLayout Padding="24,16,24,32" Spacing="16">
+        <VerticalStackLayout
+            Padding="24,16,24,32"
+            MaximumWidthRequest="{StaticResource LarguraMaxima}"
+            Spacing="16">
             <Button
                 Command="{Binding FecharCommand}"
                 HorizontalOptions="End"

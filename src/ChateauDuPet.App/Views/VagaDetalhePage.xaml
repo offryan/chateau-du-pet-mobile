@@ -17,7 +17,7 @@
             Text="Compartilhar" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="*,Auto">
+    <Grid MaximumWidthRequest="{StaticResource LarguraMaxima}" RowDefinitions="*,Auto">
         <ScrollView IsVisible="{Binding MostrarConteudo}">
             <VerticalStackLayout Padding="16,8,16,24" Spacing="16">
 

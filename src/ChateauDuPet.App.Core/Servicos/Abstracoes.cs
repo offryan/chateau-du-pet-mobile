@@ -12,6 +12,11 @@ public interface INavegacao
     Task AbrirCandidatosAsync(VagaResumo vaga);
     Task AbrirLoginAsync();
     Task VoltarAsync();
+
+    /// <summary>Formulário de vaga da empresa: sem id publica uma nova, com id edita.</summary>
+    Task AbrirFormularioDeVagaAsync(int? idVaga);
+    Task AbrirCurriculoAsync(int idProfissional);
+    Task AbrirAdministracaoAsync();
 }
 
 /// <summary>Interações com o sistema: avisos rápidos, confirmações, compartilhamento e links.</summary>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PaginaBase
+    x:Class="ChateauDuPet.App.Views.VagaFormularioPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:ChateauDuPet.Contracts;assembly=ChateauDuPet.Contracts"
+    xmlns:comp="clr-namespace:ChateauDuPet.App.Views.Componentes"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:v="clr-namespace:ChateauDuPet.App.Views"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="{Binding TituloDaTela}"
+    x:DataType="vm:VagaFormularioViewModel">
+
+    <Grid>
+        <ScrollView IsVisible="{Binding MostrarConteudo}">
+            <VerticalStackLayout
+                Padding="16,8,16,32"
+                MaximumWidthRequest="{StaticResource LarguraMaxima}"
+                Spacing="16">
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Style="{StaticResource Rotulo}" Text="Título da vaga *" />
+                    <Border Style="{StaticResource Campo}">
+                        <Entry
+                            MaxLength="{x:Static c:OpcoesDeVaga.TamanhoTitulo}"
+                            Placeholder="Ex.: Médico Veterinário"
+                            SemanticProperties.Description="Título da vaga"
+                            Text="{Binding Titulo}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="12"
+                    RowDefinitions="Auto,Auto"
+                    RowSpacing="16">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Style="{StaticResource Rotulo}" Text="Experiência" />
+                        <Border Style="{StaticResource Campo}">
+                            <Picker
+                                ItemsSource="{Binding Experiencias}"
+                                SelectedItem="{Binding Experiencia}"
+                                Title="Selecione" />
+                        </Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                        <Label Style="{StaticResource Rotulo}" Text="Contrato" />
+                        <Border Style="{StaticResource Campo}">
+                            <Picker
+                                ItemsSource="{Binding TiposDeRegistro}"
+                                SelectedItem="{Binding TipoRegistro}"
+                                Title="Selecione" />
+                        </Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Spacing="6">
+                        <Label Style="{StaticResource Rotulo}" Text="Gênero" />
+                        <Border Style="{StaticResource Campo}">
+                            <Picker
+                                ItemsSource="{Binding Sexos}"
+                                SelectedItem="{Binding Sexo}"
+                                Title="Selecione" />
+                        </Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Spacing="6">
+                        <Label Style="{StaticResource Rotulo}" Text="Validade" />
+                        <Border Style="{StaticResource Campo}">
+                            <Picker
+                                ItemsSource="{Binding Validades}"
+                                SelectedItem="{Binding Validade}"
+                                Title="Selecione" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Style="{StaticResource Rotulo}" Text="Descrição *" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource Legenda}"
+                            Text="{Binding ContadorDaDescricao}" />
+                    </Grid>
+                    <Border Padding="10,4" Style="{StaticResource Campo}">
+                        <Editor
+                            AutoSize="TextChanges"
+                            MaxLength="{x:Static c:OpcoesDeVaga.TamanhoDescricao}"
+                            MinimumHeightRequest="140"
+                            Placeholder="Atividades, requisitos, benefícios..."
+                            SemanticProperties.Description="Descrição da vaga"
+                            Text="{Binding Descricao}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Label
+                    IsVisible="{Binding ErroDoFormulario, Converter={StaticResource TemTexto}}"
+                    Text="{Binding ErroDoFormulario}"
+                    TextColor="{StaticResource Vermelho}" />
+
+                <Grid>
+                    <Button Command="{Binding SalvarCommand}" Text="{Binding TextoDoBotao}" />
+                    <ActivityIndicator
+                        Margin="0,0,16,0"
+                        HeightRequest="24"
+                        HorizontalOptions="End"
+                        IsRunning="{Binding Salvando}"
+                        IsVisible="{Binding Salvando}"
+                        Color="{StaticResource Branco}" />
+                </Grid>
+                <Button
+                    Command="{Binding CancelarCommand}"
+                    Style="{StaticResource BotaoTexto}"
+                    Text="Cancelar" />
+
+                <VerticalStackLayout
+                    Margin="0,16,0,0"
+                    IsVisible="{Binding EhEdicao}"
+                    Spacing="8">
+                    <BoxView HeightRequest="1" Color="{toolkit:AppThemeResource Borda}" />
+                    <Label Style="{StaticResource Legenda}" Text="Excluir a vaga apaga também as candidaturas dela." />
+                    <Button
+                        Command="{Binding ExcluirCommand}"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource BotaoPerigo}"
+                        Text="Excluir vaga" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <comp:EstadoDaTela />
+    </Grid>
+</v:PaginaBase>

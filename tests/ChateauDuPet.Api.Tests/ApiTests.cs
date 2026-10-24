@@ -239,6 +239,9 @@ public class ApiTests(ApiFixture api) : IAsyncLifetime
         Assert.True(ExigeToken("/api/vagas/{id}/candidatura", "post"));
         Assert.True(ExigeToken("/api/me/candidaturas", "get"));
         Assert.True(ExigeToken("/api/me/vagas/{id}/candidatos", "get"));
+        Assert.True(ExigeToken("/api/me/vagas", "post"));
+        Assert.True(ExigeToken("/api/profissionais/{id}/curriculo", "get"));
+        Assert.True(ExigeToken("/api/admin/empresas/{id}", "delete"));
 
         // O login já vem preenchido com a conta de demonstração no Scalar
         var exemploDoLogin = raiz.GetProperty("paths").GetProperty("/api/auth/login").GetProperty("post")

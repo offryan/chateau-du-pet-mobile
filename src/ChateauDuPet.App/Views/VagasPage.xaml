@@ -11,7 +11,7 @@
     x:DataType="vm:VagasViewModel"
     Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="Auto,Auto,*">
+    <Grid MaximumWidthRequest="{StaticResource LarguraMaxima}" RowDefinitions="Auto,Auto,*">
         <!-- Cabeçalho -->
         <Grid
             Padding="20,16,20,4"

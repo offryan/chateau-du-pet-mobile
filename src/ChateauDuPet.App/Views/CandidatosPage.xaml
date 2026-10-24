@@ -11,7 +11,7 @@
     Title="Candidatos"
     x:DataType="vm:CandidatosViewModel">
 
-    <Grid>
+    <Grid MaximumWidthRequest="{StaticResource LarguraMaxima}">
         <RefreshView
             Command="{Binding AtualizarCommand}"
             IsRefreshing="{Binding Atualizando}"
@@ -21,6 +21,10 @@
                     <VerticalStackLayout Padding="20,8,20,12" Spacing="2">
                         <Label Style="{StaticResource Titulo}" Text="{Binding TituloVaga}" />
                         <Label Style="{StaticResource Legenda}" Text="{Binding Resumo}" />
+                        <Label
+                            IsVisible="{Binding Candidatos, Converter={StaticResource ListaComItens}}"
+                            Style="{StaticResource Legenda}"
+                            Text="Toque em um candidato para ver o currículo." />
                     </VerticalStackLayout>
                 </CollectionView.Header>
 
@@ -31,6 +35,9 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="c:CandidatoResumo">
                         <Border Margin="16,0" Style="{StaticResource Card}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AbrirCurriculoCommand, Source={RelativeSource AncestorType={x:Type vm:CandidatosViewModel}}, x:DataType=vm:CandidatosViewModel}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
                                 <Border Style="{StaticResource Avatar}">
                                     <Label Style="{StaticResource AvatarTexto}" Text="{Binding Nome, Converter={StaticResource Iniciais}}" />

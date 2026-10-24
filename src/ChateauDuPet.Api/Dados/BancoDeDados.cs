@@ -18,6 +18,7 @@ public static class BancoDeDados
         services.AddSingleton<UsuariosRepositorio>();
         services.AddSingleton<VagasRepositorio>();
         services.AddSingleton<PerfilRepositorio>();
+        services.AddSingleton<AdminRepositorio>();
         return services;
     }
 

@@ -15,5 +15,17 @@ public partial class App : Application
         _ = sessao.RestaurarAsync();
     }
 
-    protected override Window CreateWindow(IActivationState? activationState) => new(_shell);
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        var janela = new Window(_shell) { Title = "Chateau Du Pet" };
+        if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
+        {
+            // No PC, abre numa janela confortável para a gestão em vez do tamanho padrão do sistema
+            janela.Width = 1100;
+            janela.Height = 800;
+            janela.MinimumWidth = 420;
+            janela.MinimumHeight = 600;
+        }
+        return janela;
+    }
 }

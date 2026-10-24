@@ -34,6 +34,7 @@ public static class MauiProgram
         services.AddSingleton<INavegacao, NavegacaoShell>();
         services.AddSingleton<IPlataforma, PlataformaMaui>();
         services.AddSingleton<Sessao>();
+        services.AddSingleton<AlteracoesDeDados>();
 
         // Cliente da API com novas tentativas automáticas. Os tempos são generosos porque
         // o plano gratuito do Render desliga a API ociosa e ela leva até ~1 min para voltar.
@@ -59,6 +60,11 @@ public static class MauiProgram
         services.AddTransientWithShellRoute<VagaDetalhePage, VagaDetalheViewModel>(Rotas.Vaga);
         services.AddTransientWithShellRoute<CandidatosPage, CandidatosViewModel>(Rotas.Candidatos);
         services.AddTransientWithShellRoute<LoginPage, LoginViewModel>(Rotas.Login);
+
+        // Gestão (empresa e administrador), as funções do antigo app desktop
+        services.AddTransientWithShellRoute<VagaFormularioPage, VagaFormularioViewModel>(Rotas.FormularioDeVaga);
+        services.AddTransientWithShellRoute<CurriculoPage, CurriculoViewModel>(Rotas.Curriculo);
+        services.AddTransientWithShellRoute<AdministracaoPage, AdministracaoViewModel>(Rotas.Administracao);
 
         return builder.Build();
     }
