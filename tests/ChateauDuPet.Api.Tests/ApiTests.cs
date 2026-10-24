@@ -220,12 +220,25 @@ public class ApiTests(ApiFixture api) : IAsyncLifetime
     }
 
     [Fact]
-    public async Task Documento_OpenAPI_descreve_as_rotas_e_o_login_por_token()
+    public async Task Documento_OpenAPI_exige_token_so_nas_rotas_protegidas()
     {
-        var documento = await api.CreateClient().GetStringAsync("/openapi/v1.json", CT);
+        using var documento = System.Text.Json.JsonDocument.Parse(
+            await api.CreateClient().GetStringAsync("/openapi/v1.json", CT));
+        var raiz = documento.RootElement;
+        bool ExigeToken(string rota, string metodo) =>
+            raiz.GetProperty("paths").GetProperty(rota).GetProperty(metodo).TryGetProperty("security", out _);
 
-        Assert.Contains("/api/vagas/{id}/candidatura", documento);
-        Assert.Contains("\"bearer\"", documento);
+        Assert.Equal("Chateau Du Pet API", raiz.GetProperty("info").GetProperty("title").GetString());
+        Assert.False(raiz.TryGetProperty("security", out _)); // nada é exigido no documento inteiro
+        Assert.Equal("bearer", raiz.GetProperty("components").GetProperty("securitySchemes")
+            .GetProperty("Bearer").GetProperty("scheme").GetString());
+
+        Assert.False(ExigeToken("/api/auth/login", "post"));
+        Assert.False(ExigeToken("/api/vagas", "get"));
+        Assert.False(ExigeToken("/api/vagas/{id}", "get"));
+        Assert.True(ExigeToken("/api/vagas/{id}/candidatura", "post"));
+        Assert.True(ExigeToken("/api/me/candidaturas", "get"));
+        Assert.True(ExigeToken("/api/me/vagas/{id}/candidatos", "get"));
     }
 
     [Theory]

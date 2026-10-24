@@ -47,7 +47,7 @@ builder.Services.AddAuthorizationBuilder()
 builder.Services.AddLimitesDeAcesso(builder.Configuration);
 builder.Services.AddProblemDetails();
 builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.TypeInfoResolverChain.Insert(0, ChateauJsonContext.Default));
-builder.Services.AddOpenApi(o => o.AddDocumentTransformer<OpenApiBearer>());
+builder.Services.AddOpenApi(o => o.AddDocumentTransformer<OpenApiBearer>().AddOperationTransformer<OpenApiBearer>());
 
 builder.Services.Configure<ForwardedHeadersOptions>(opcoes =>
 {
