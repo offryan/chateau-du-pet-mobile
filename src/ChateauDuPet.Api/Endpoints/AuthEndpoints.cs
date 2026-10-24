@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Text.Json.Nodes;
 using ChateauDuPet.Api.Autenticacao;
 using ChateauDuPet.Api.Dados;
 using ChateauDuPet.Contracts;
@@ -21,7 +22,14 @@ public static class AuthEndpoints
                     : TypedResults.Ok(tokens.Emitir(usuario));
             })
             .RequireRateLimiting(LimitesDeAcesso.Login)
-            .WithSummary("Entra com e-mail e senha e recebe um token JWT");
+            .WithSummary("Entra com e-mail e senha e recebe um token JWT")
+            .AddOpenApiOperationTransformer((operacao, _, _) =>
+            {
+                // Já vem preenchido no Scalar com a conta pública de demonstração: é só clicar em Send
+                if (operacao.RequestBody?.Content?.TryGetValue("application/json", out var json) == true)
+                    json.Example = new JsonObject { ["email"] = "jucelino@exemplo.com", ["senha"] = "demo1234" };
+                return Task.CompletedTask;
+            });
 
         grupo.MapGet("/eu", (ClaimsPrincipal usuario) => TypedResults.Ok(usuario.Info()))
             .RequireAuthorization()
