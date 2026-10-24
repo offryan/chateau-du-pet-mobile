@@ -12,6 +12,10 @@ Gravação do APK rodando num celular Android, consumindo a API publicada:
 
 https://github.com/user-attachments/assets/f57e9775-f1a2-4dfa-a64c-0eb34ffdba9b
 
+📥 **Baixe e instale:** [chateau-du-pet.apk](https://github.com/offryan/chateau-du-pet-mobile/releases/latest/download/chateau-du-pet.apk) (Android 6.0 ou mais recente; veja todas as versões em [Releases](https://github.com/offryan/chateau-du-pet-mobile/releases))
+
+> O APK não vem da Play Store, então o Android pede para permitir a instalação de fontes desconhecidas e o Play Protect pode mostrar "app não verificado". Toque em **Instalar mesmo assim**.
+
 ## ✨ O que o app faz
 
 | Perfil | Funcionalidades |
