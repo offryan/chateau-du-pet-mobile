@@ -6,6 +6,12 @@ Este repositório traz o app e a **API** que ele consome. A API usa o mesmo banc
 
 🔗 **API no ar:** https://chateau-du-pet-api.onrender.com/scalar ([teste em 2 minutos](#-teste-a-api-em-2-minutos))
 
+## 📱 O app em funcionamento
+
+Gravação do APK rodando num celular Android, consumindo a API publicada:
+
+https://github.com/user-attachments/assets/f57e9775-f1a2-4dfa-a64c-0eb34ffdba9b
+
 ## ✨ O que o app faz
 
 | Perfil | Funcionalidades |
