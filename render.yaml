@@ -5,7 +5,7 @@ services:
     name: chateau-du-pet-api
     runtime: docker
     plan: free
-    region: oregon
+    region: virginia
     dockerfilePath: ./Dockerfile
     healthCheckPath: /health
     autoDeploy: true
