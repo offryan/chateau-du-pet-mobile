@@ -137,8 +137,23 @@ O `render.yaml` cria o serviço a partir do `Dockerfile`. Variáveis de ambiente
 
 | Variável | Valor |
 |---|---|
-| `DATABASE_URL` | String de conexão do Supabase (a mesma do portal web: usuário `chateau_app`, que só lê e grava nas tabelas do Chateau) |
+| `DATABASE_URL` | String de conexão do Supabase pelo Session pooler (`postgresql://chateau_api.<ref>:<senha>@aws-0-<regiao>.pooler.supabase.com:5432/postgres`) |
 | `Jwt__Chave` | Segredo de assinatura dos tokens, com 32+ caracteres (o Render gera um sozinho) |
+
+A API conecta com um usuário de banco próprio, `chateau_api`, separado do usuário do portal web e com o mínimo necessário: só leitura nas tabelas de usuários, vagas e currículos, e gravação apenas em `Candidatos` (candidatar e cancelar). Não acessa as chaves do portal (`DataProtectionKeys`). Para recriá-lo em outro projeto (troque a senha):
+
+```sql
+CREATE ROLE chateau_api WITH LOGIN PASSWORD '<senha forte>' NOINHERIT;
+GRANT USAGE ON SCHEMA public TO chateau_api;
+GRANT SELECT ON administrativo, empresa, profissional, experiencia, certificado, vaga, candidatos TO chateau_api;
+GRANT INSERT, DELETE ON candidatos TO chateau_api;
+GRANT USAGE ON SEQUENCE candidatos_idcandidatos_seq TO chateau_api;
+-- O RLS segue ligado: uma policy de leitura por tabela, mais as de candidatar e cancelar
+CREATE POLICY api_leitura ON vaga FOR SELECT TO chateau_api USING (true);
+-- ...repita para administrativo, empresa, profissional, experiencia, certificado e candidatos
+CREATE POLICY api_candidatar ON candidatos FOR INSERT TO chateau_api WITH CHECK (true);
+CREATE POLICY api_cancelar   ON candidatos FOR DELETE TO chateau_api USING (true);
+```
 
 A cada push na `main`, o GitHub Actions roda os testes e gera o APK (aba **Actions** → artefato `chateau-du-pet-apk`). Ao criar uma tag `v*`, o APK é anexado a uma release.
 
@@ -149,7 +164,7 @@ A cada push na `main`, o GitHub Actions roda os testes e gera o APK (aba **Actio
 - Rotas de profissional e empresa usam sempre o id do token, nunca um id vindo da URL: ninguém vê ou altera dados de outra conta
 - SQL sempre parametrizado; curingas da busca (`%`, `_`) são escapados
 - Limite de tentativas de login por IP
-- No banco, o Row Level Security do Supabase continua bloqueando a API pública
+- No banco, a API usa um usuário próprio com permissões mínimas, e o Row Level Security do Supabase continua bloqueando a API pública
 
 ---
 
