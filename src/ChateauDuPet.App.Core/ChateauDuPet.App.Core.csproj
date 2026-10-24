@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Lógica do app sem dependência de MAUI: ViewModels, cliente da API e sessão.
+       Assim dá para testar tudo com xUnit comum, sem emulador. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChateauDuPet.Contracts\ChateauDuPet.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

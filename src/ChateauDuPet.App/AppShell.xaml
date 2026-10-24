@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ChateauDuPet.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:v="clr-namespace:ChateauDuPet.App.Views"
+    Title="Chateau Du Pet"
+    Shell.FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <ShellContent Title="Vagas" Icon="ic_briefcase.png" Route="vagas" ContentTemplate="{DataTemplate v:VagasPage}" />
+        <ShellContent Title="Minha área" Icon="ic_person_circle.png" Route="minha-area" ContentTemplate="{DataTemplate v:MinhaAreaPage}" />
+        <ShellContent Title="Sobre" Icon="ic_info_circle.png" Route="sobre" ContentTemplate="{DataTemplate v:SobrePage}" />
+    </TabBar>
+
+</Shell>

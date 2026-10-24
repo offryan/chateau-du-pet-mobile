@@ -1,0 +1,16 @@
+@api = http://localhost:5080
+
+GET {{api}}/api/vagas?busca=veterin
+
+###
+
+# @name login
+POST {{api}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "jucelino@exemplo.com", "senha": "demo1234" }
+
+###
+
+GET {{api}}/api/me/candidaturas
+Authorization: Bearer {{login.response.body.token}}

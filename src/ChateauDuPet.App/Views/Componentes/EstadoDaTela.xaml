@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Sobreposição comum às telas que buscam dados: indicador de carregamento e mensagem de erro com "tentar de novo" -->
+<ContentView
+    x:Class="ChateauDuPet.App.Views.Componentes.EstadoDaTela"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    x:DataType="vm:ViewModelBase"
+    InputTransparent="{Binding MostrarConteudo}">
+    <Grid>
+        <VerticalStackLayout
+            Padding="32"
+            HorizontalOptions="Center"
+            IsVisible="{Binding MostrarIndicador}"
+            Spacing="12"
+            VerticalOptions="Center">
+            <ActivityIndicator IsRunning="{Binding MostrarIndicador}" />
+            <Label HorizontalOptions="Center" Style="{StaticResource Legenda}" Text="Carregando..." />
+            <Label
+                HorizontalTextAlignment="Center"
+                IsVisible="{Binding Demorando}"
+                MaximumWidthRequest="320"
+                Style="{StaticResource Legenda}"
+                Text="O servidor de demonstração dorme quando fica parado e leva até 1 minuto para acordar. Obrigado pela paciência! 🐶" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout
+            Padding="32"
+            HorizontalOptions="Center"
+            IsVisible="{Binding TemErro}"
+            Spacing="12"
+            VerticalOptions="Center">
+            <Image HeightRequest="48" Source="ic_wifi_off.png" WidthRequest="48" />
+            <Label HorizontalOptions="Center" Style="{StaticResource TituloCard}" Text="Algo deu errado" />
+            <Label
+                HorizontalTextAlignment="Center"
+                MaximumWidthRequest="320"
+                Style="{StaticResource Legenda}"
+                Text="{Binding Erro}" />
+            <Button
+                Margin="0,8,0,0"
+                Command="{Binding TentarDeNovoCommand}"
+                HorizontalOptions="Center"
+                Text="Tentar de novo" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentView>

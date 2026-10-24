@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <!-- Cores que mudam com o tema claro/escuro do aparelho. Uso: {toolkit:AppThemeResource Fundo} -->
+    <toolkit:AppThemeColor x:Key="Fundo" Light="{StaticResource FundoClaro}" Dark="{StaticResource FundoEscuro}" />
+    <toolkit:AppThemeColor x:Key="Superficie" Light="{StaticResource SuperficieClara}" Dark="{StaticResource SuperficieEscura}" />
+    <toolkit:AppThemeColor x:Key="Borda" Light="{StaticResource BordaClara}" Dark="{StaticResource BordaEscura}" />
+    <toolkit:AppThemeColor x:Key="Texto" Light="{StaticResource TextoClaro}" Dark="{StaticResource TextoEscuro}" />
+    <toolkit:AppThemeColor x:Key="TextoSuave" Light="{StaticResource TextoSuaveClaro}" Dark="{StaticResource TextoSuaveEscuro}" />
+    <toolkit:AppThemeColor x:Key="Destaque" Light="{StaticResource Rosa}" Dark="{StaticResource RosaNoEscuro}" />
+    <toolkit:AppThemeColor x:Key="DestaqueSuave" Light="{StaticResource RosaClaro}" Dark="{StaticResource RosaClaroNoEscuro}" />
+    <toolkit:AppThemeColor x:Key="Sucesso" Light="{StaticResource Verde}" Dark="{StaticResource VerdeNoEscuro}" />
+    <toolkit:AppThemeColor x:Key="SucessoSuave" Light="{StaticResource VerdeClaro}" Dark="{StaticResource VerdeClaroNoEscuro}" />
+
+    <!-- Estilos implícitos (valem para todos os controles do tipo) -->
+
+    <Style TargetType="Page" ApplyToDerivedTypes="True">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource Fundo}" />
+    </Style>
+
+    <Style TargetType="Shell" ApplyToDerivedTypes="True">
+        <Setter Property="Shell.BackgroundColor" Value="{toolkit:AppThemeResource Fundo}" />
+        <Setter Property="Shell.ForegroundColor" Value="{toolkit:AppThemeResource Texto}" />
+        <Setter Property="Shell.TitleColor" Value="{toolkit:AppThemeResource Texto}" />
+        <Setter Property="Shell.NavBarHasShadow" Value="False" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{toolkit:AppThemeResource Superficie}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Texto}" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="TextColor" Value="{StaticResource Branco}" />
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="Padding" Value="20,12" />
+        <Setter Property="MinimumHeightRequest" Value="50" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.5" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.98" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="PointerOver" />
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- Botão de contorno, para ações secundárias -->
+    <Style x:Key="BotaoSecundario" TargetType="Button">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="BorderWidth" Value="1.5" />
+    </Style>
+
+    <!-- Botão só com texto, para ações discretas (cancelar, sair) -->
+    <Style x:Key="BotaoTexto" TargetType="Button">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="MinimumHeightRequest" Value="40" />
+        <Setter Property="Padding" Value="8" />
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Texto}" />
+        <Setter Property="PlaceholderColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="MinimumHeightRequest" Value="48" />
+    </Style>
+
+    <Style TargetType="SearchBar">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Texto}" />
+        <Setter Property="PlaceholderColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+        <Setter Property="CancelButtonColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+
+    <Style TargetType="ActivityIndicator">
+        <Setter Property="Color" Value="{toolkit:AppThemeResource Destaque}" />
+    </Style>
+
+    <Style TargetType="RefreshView">
+        <Setter Property="RefreshColor" Value="{toolkit:AppThemeResource Destaque}" />
+    </Style>
+
+    <Style TargetType="Border">
+        <Setter Property="Stroke" Value="{toolkit:AppThemeResource Borda}" />
+        <Setter Property="StrokeThickness" Value="1" />
+    </Style>
+
+    <!-- Estilos nomeados -->
+
+    <Style x:Key="Card" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource Superficie}" />
+        <Setter Property="Stroke" Value="{toolkit:AppThemeResource Borda}" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 18" />
+        <Setter Property="Padding" Value="16" />
+    </Style>
+
+    <!-- Campo de formulário: Entry dentro de uma borda arredondada -->
+    <Style x:Key="Campo" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource Superficie}" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+        <Setter Property="Padding" Value="14,2" />
+    </Style>
+
+    <Style x:Key="Chip" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DestaqueSuave}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+        <Setter Property="Padding" Value="10,4" />
+    </Style>
+
+    <Style x:Key="ChipTexto" TargetType="Label">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style x:Key="Avatar" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DestaqueSuave}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="Ellipse" />
+        <Setter Property="WidthRequest" Value="48" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
+
+    <Style x:Key="AvatarTexto" TargetType="Label">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource Destaque}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="Titulo" TargetType="Label">
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="LineHeight" Value="1.1" />
+    </Style>
+
+    <Style x:Key="TituloCard" TargetType="Label">
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="17" />
+    </Style>
+
+    <Style x:Key="Secao" TargetType="Label">
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="Margin" Value="0,12,0,0" />
+    </Style>
+
+    <Style x:Key="Legenda" TargetType="Label">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style x:Key="Rotulo" TargetType="Label">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextoSuave}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="CharacterSpacing" Value="0.5" />
+        <Setter Property="TextTransform" Value="Uppercase" />
+    </Style>
+
+    <Style x:Key="Icone" TargetType="Image">
+        <Setter Property="WidthRequest" Value="16" />
+        <Setter Property="HeightRequest" Value="16" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+</ResourceDictionary>

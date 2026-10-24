@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="ChateauDuPet.App.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:ChateauDuPet.App.Conversores"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <conv:TempoRelativoConverter x:Key="TempoRelativo" />
+            <conv:PeriodoConverter x:Key="Periodo" />
+            <conv:IniciaisConverter x:Key="Iniciais" />
+            <conv:TelefoneConverter x:Key="Telefone" />
+            <toolkit:IsStringNotNullOrWhiteSpaceConverter x:Key="TemTexto" />
+            <toolkit:IsNotNullConverter x:Key="NaoNulo" />
+            <toolkit:InvertedBoolConverter x:Key="Inverter" />
+            <toolkit:IsListNotNullOrEmptyConverter x:Key="ListaComItens" />
+            <toolkit:IsListNullOrEmptyConverter x:Key="ListaVazia" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

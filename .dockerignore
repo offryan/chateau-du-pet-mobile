@@ -1,0 +1,7 @@
+**/bin/
+**/obj/
+src/ChateauDuPet.App/
+src/ChateauDuPet.App.Core/
+tests/
+.git/
+.github/

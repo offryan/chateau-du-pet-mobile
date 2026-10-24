@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ChateauDuPet.App</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+
+    <!-- XAML convertido em C# na compilação: erros de binding aparecem no build, e a tela abre mais rápido -->
+    <MauiXamlInflator>SourceGen</MauiXamlInflator>
+    <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+
+    <ApplicationTitle>Chateau Du Pet</ApplicationTitle>
+    <ApplicationId>br.com.chateaudupet.app</ApplicationId>
+    <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+    <ApplicationVersion>2</ApplicationVersion>
+
+    <WindowsPackageType>None</WindowsPackageType>
+
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">17.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+
+    <!-- Endereço da API. Para testar com a API local no emulador Android:
+         dotnet build -t:Run -f net10.0-android -p:ChateauApiUrl=http://10.0.2.2:5080 -->
+    <ChateauApiUrl Condition="'$(ChateauApiUrl)' == ''">https://chateau-du-pet-api.onrender.com</ChateauApiUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(TargetFramework)' == 'net10.0-android'">
+    <AndroidPackageFormats>apk;aab</AndroidPackageFormats>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="ChateauApiUrl" Value="$(ChateauApiUrl)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.png" ForegroundScale="0.62" Color="#FFFFFF" />
+    <MauiSplashScreen Include="Resources\Splash\splash.png" Color="#FFFFFF" BaseSize="200,189" />
+
+    <MauiImage Include="Resources\Images\*" />
+    <!-- Ícones (Bootstrap Icons) no rosa da marca; na barra de abas o Shell aplica a cor da aba -->
+    <MauiImage Update="Resources\Images\ic_*.svg" BaseSize="24,24" TintColor="#E0157F" />
+    <MauiImage Update="Resources\Images\ilustra_*.svg" BaseSize="260,190" />
+    <MauiImage Update="Resources\Images\logo_chateau.png" BaseSize="160,151" />
+    <MauiImage Update="Resources\Images\hero_beagle.jpg" Resize="False" />
+
+    <MauiFont Include="Resources\Fonts\*" />
+    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" />
+    <PackageReference Include="CommunityToolkit.Maui" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChateauDuPet.App.Core\ChateauDuPet.App.Core.csproj" />
+  </ItemGroup>
+
+</Project>

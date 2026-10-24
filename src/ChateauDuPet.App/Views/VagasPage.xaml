@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PaginaBase
+    x:Class="ChateauDuPet.App.Views.VagasPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:ChateauDuPet.Contracts;assembly=ChateauDuPet.Contracts"
+    xmlns:comp="clr-namespace:ChateauDuPet.App.Views.Componentes"
+    xmlns:v="clr-namespace:ChateauDuPet.App.Views"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="Vagas"
+    x:DataType="vm:VagasViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+        <!-- Cabeçalho -->
+        <Grid
+            Padding="20,16,20,4"
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="12">
+            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                <Label Style="{StaticResource Rotulo}" Text="Chateau Du Pet" TextColor="{AppThemeBinding Light={StaticResource Rosa}, Dark={StaticResource RosaNoEscuro}}" />
+                <Label Style="{StaticResource Titulo}" Text="Vagas no mundo pet" />
+            </VerticalStackLayout>
+            <Image
+                Grid.Column="1"
+                HeightRequest="52"
+                SemanticProperties.Description="Logo do Chateau Du Pet"
+                Source="logo_chateau.png" />
+        </Grid>
+
+        <!-- Busca -->
+        <Border
+            Grid.Row="1"
+            Margin="16,12,16,4"
+            Padding="4,0"
+            Style="{StaticResource Campo}">
+            <SearchBar
+                Placeholder="Cargo, empresa ou cidade"
+                SemanticProperties.Hint="Filtra as vagas enquanto você digita"
+                Text="{Binding Busca}" />
+        </Border>
+
+        <RefreshView
+            Grid.Row="2"
+            Command="{Binding AtualizarCommand}"
+            IsRefreshing="{Binding Atualizando}"
+            IsVisible="{Binding MostrarConteudo}">
+            <CollectionView ItemsSource="{Binding Vagas}" SelectionMode="None">
+                <CollectionView.Header>
+                    <Label
+                        Margin="20,12,20,4"
+                        Style="{StaticResource Legenda}"
+                        Text="{Binding Resumo}" />
+                </CollectionView.Header>
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="12" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="c:VagaResumo">
+                        <Border Margin="16,0" Style="{StaticResource Card}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AbrirVagaCommand, Source={RelativeSource AncestorType={x:Type vm:VagasViewModel}}, x:DataType=vm:VagasViewModel}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Grid
+                                ColumnDefinitions="*,Auto"
+                                RowDefinitions="Auto,Auto,Auto"
+                                RowSpacing="6">
+                                <Label
+                                    LineBreakMode="TailTruncation"
+                                    Style="{StaticResource TituloCard}"
+                                    Text="{Binding Titulo}" />
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource Legenda}"
+                                    Text="{Binding PublicadaEm, Converter={StaticResource TempoRelativo}}"
+                                    VerticalOptions="Center" />
+
+                                <HorizontalStackLayout Grid.Row="1" Spacing="6">
+                                    <Image Source="ic_building.png" Style="{StaticResource Icone}" />
+                                    <Label Text="{Binding Empresa}" />
+                                </HorizontalStackLayout>
+
+                                <FlexLayout
+                                    Grid.Row="2"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,4,0,0"
+                                    AlignItems="Center"
+                                    Wrap="Wrap">
+                                    <Border
+                                        Margin="0,0,6,4"
+                                        IsVisible="{Binding Cidade, Converter={StaticResource TemTexto}}"
+                                        Style="{StaticResource Chip}">
+                                        <HorizontalStackLayout Spacing="4">
+                                            <Image
+                                                HeightRequest="12"
+                                                Source="ic_geo_alt.png"
+                                                WidthRequest="12" />
+                                            <Label Style="{StaticResource ChipTexto}" Text="{Binding Cidade}" />
+                                        </HorizontalStackLayout>
+                                    </Border>
+                                    <Border
+                                        Margin="0,0,6,4"
+                                        IsVisible="{Binding TipoRegistro, Converter={StaticResource TemTexto}}"
+                                        Style="{StaticResource Chip}">
+                                        <Label Style="{StaticResource ChipTexto}" Text="{Binding TipoRegistro}" />
+                                    </Border>
+                                    <HorizontalStackLayout Margin="4,0,0,4" Spacing="4">
+                                        <Image
+                                            HeightRequest="14"
+                                            Source="ic_people.png"
+                                            WidthRequest="14" />
+                                        <Label Style="{StaticResource Legenda}" Text="{Binding TotalCandidatos}" />
+                                    </HorizontalStackLayout>
+                                </FlexLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        Padding="32"
+                        IsVisible="{Binding SemResultados}"
+                        Spacing="12">
+                        <Image HeightRequest="160" Source="ilustra_passeio.png" />
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource TituloCard}"
+                            Text="Nenhuma vaga encontrada" />
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource Legenda}"
+                            Text="Tente buscar por outro cargo, empresa ou cidade." />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="16" Color="Transparent" />
+                </CollectionView.Footer>
+            </CollectionView>
+        </RefreshView>
+
+        <comp:EstadoDaTela Grid.Row="2" />
+    </Grid>
+</v:PaginaBase>

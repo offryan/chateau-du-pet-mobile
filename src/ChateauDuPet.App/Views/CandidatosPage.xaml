@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PaginaBase
+    x:Class="ChateauDuPet.App.Views.CandidatosPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:ChateauDuPet.Contracts;assembly=ChateauDuPet.Contracts"
+    xmlns:comp="clr-namespace:ChateauDuPet.App.Views.Componentes"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:v="clr-namespace:ChateauDuPet.App.Views"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="Candidatos"
+    x:DataType="vm:CandidatosViewModel">
+
+    <Grid>
+        <RefreshView
+            Command="{Binding AtualizarCommand}"
+            IsRefreshing="{Binding Atualizando}"
+            IsVisible="{Binding MostrarConteudo}">
+            <CollectionView ItemsSource="{Binding Candidatos}" SelectionMode="None">
+                <CollectionView.Header>
+                    <VerticalStackLayout Padding="20,8,20,12" Spacing="2">
+                        <Label Style="{StaticResource Titulo}" Text="{Binding TituloVaga}" />
+                        <Label Style="{StaticResource Legenda}" Text="{Binding Resumo}" />
+                    </VerticalStackLayout>
+                </CollectionView.Header>
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="c:CandidatoResumo">
+                        <Border Margin="16,0" Style="{StaticResource Card}">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border Style="{StaticResource Avatar}">
+                                    <Label Style="{StaticResource AvatarTexto}" Text="{Binding Nome, Converter={StaticResource Iniciais}}" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Nome}" />
+                                    <Label
+                                        IsVisible="{Binding Formacao, Converter={StaticResource TemTexto}}"
+                                        Style="{StaticResource Legenda}"
+                                        Text="{Binding Formacao}" />
+                                    <Label Style="{StaticResource Legenda}" Text="{Binding Data, Converter={StaticResource TempoRelativo}, StringFormat='Candidatou-se {0}'}" />
+                                </VerticalStackLayout>
+                                <ImageButton
+                                    Grid.Column="2"
+                                    Padding="10"
+                                    Command="{Binding EnviarEmailCommand, Source={RelativeSource AncestorType={x:Type vm:CandidatosViewModel}}, x:DataType=vm:CandidatosViewModel}"
+                                    CommandParameter="{Binding .}"
+                                    HeightRequest="44"
+                                    SemanticProperties.Description="Enviar e-mail ao candidato"
+                                    Source="ic_envelope.png"
+                                    WidthRequest="44" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        Padding="32"
+                        IsVisible="{Binding SemCandidatos}"
+                        Spacing="12">
+                        <Image HeightRequest="150" Source="ilustra_gato.png" />
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource TituloCard}"
+                            Text="Ainda sem candidatos" />
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource Legenda}"
+                            Text="Quando alguém se candidatar, aparece aqui." />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
+
+        <comp:EstadoDaTela />
+    </Grid>
+</v:PaginaBase>

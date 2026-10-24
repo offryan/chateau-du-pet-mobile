@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PaginaBase
+    x:Class="ChateauDuPet.App.Views.MinhaAreaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:ChateauDuPet.Contracts;assembly=ChateauDuPet.Contracts"
+    xmlns:comp="clr-namespace:ChateauDuPet.App.Views.Componentes"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:v="clr-namespace:ChateauDuPet.App.Views"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="Minha área"
+    x:DataType="vm:MinhaAreaViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <!-- Visitante: convite para entrar -->
+        <VerticalStackLayout
+            Padding="32"
+            IsVisible="{Binding EhVisitante}"
+            Spacing="16"
+            VerticalOptions="Center">
+            <Image HeightRequest="180" Source="ilustra_curriculo.png" />
+            <Label
+                HorizontalTextAlignment="Center"
+                Style="{StaticResource Titulo}"
+                Text="Sua carreira no mundo pet" />
+            <Label
+                HorizontalTextAlignment="Center"
+                Style="{StaticResource Legenda}"
+                Text="Entre para acompanhar suas candidaturas e ver seu currículo. Empresas veem aqui as vagas publicadas e os candidatos." />
+            <Button Command="{Binding EntrarCommand}" Text="Entrar" />
+        </VerticalStackLayout>
+
+        <RefreshView
+            Command="{Binding AtualizarCommand}"
+            IsRefreshing="{Binding Atualizando}"
+            IsVisible="{Binding EhVisitante, Converter={StaticResource Inverter}}">
+            <ScrollView>
+                <VerticalStackLayout Padding="16,16,16,24" Spacing="16">
+
+                    <!-- Cabeçalho com o usuário logado -->
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Border Style="{StaticResource Avatar}" WidthRequest="56" HeightRequest="56">
+                            <Label Style="{StaticResource AvatarTexto}" Text="{Binding Iniciais}" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Style="{StaticResource TituloCard}" Text="{Binding Usuario.Nome}" />
+                            <Label Style="{StaticResource Legenda}" Text="{Binding Usuario.Email}" />
+                        </VerticalStackLayout>
+                        <ImageButton
+                            Grid.Column="2"
+                            Padding="10"
+                            Command="{Binding SairCommand}"
+                            HeightRequest="44"
+                            SemanticProperties.Description="Sair da conta"
+                            Source="ic_box_arrow_right.png"
+                            WidthRequest="44" />
+                    </Grid>
+
+                    <!-- Erro ou carregamento do conteúdo da conta -->
+                    <comp:EstadoDaTela HeightRequest="280" IsVisible="{Binding MostrarConteudo, Converter={StaticResource Inverter}}" />
+
+                    <!-- Profissional: candidaturas -->
+                    <VerticalStackLayout IsVisible="{Binding MostrarConteudo}" Spacing="16">
+                        <VerticalStackLayout IsVisible="{Binding EhProfissional}" Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Style="{StaticResource Secao}" Text="Minhas candidaturas" />
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource Legenda}"
+                                    Text="{Binding ResumoCandidaturas}"
+                                    VerticalOptions="End" />
+                            </Grid>
+                            <Border IsVisible="{Binding Candidaturas, Converter={StaticResource ListaVazia}}" Style="{StaticResource Card}">
+                                <Label
+                                    HorizontalTextAlignment="Center"
+                                    Style="{StaticResource Legenda}"
+                                    Text="Você ainda não se candidatou. Encontre uma vaga na aba Vagas!" />
+                            </Border>
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Candidaturas}" Spacing="10">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="c:CandidaturaResumo">
+                                        <Border Style="{StaticResource Card}">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding AbrirCandidaturaCommand, Source={RelativeSource AncestorType={x:Type vm:MinhaAreaViewModel}}, x:DataType=vm:MinhaAreaViewModel}" CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <VerticalStackLayout Spacing="2">
+                                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Vaga}" />
+                                                    <Label Style="{StaticResource Legenda}" Text="{Binding Empresa}" />
+                                                </VerticalStackLayout>
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Style="{StaticResource Legenda}"
+                                                    Text="{Binding Data, Converter={StaticResource TempoRelativo}}"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                        <!-- Profissional: currículo -->
+                        <VerticalStackLayout IsVisible="{Binding Perfil, Converter={StaticResource NaoNulo}}" Spacing="10">
+                            <Label Style="{StaticResource Secao}" Text="Meu currículo" />
+                            <Border Style="{StaticResource Card}">
+                                <VerticalStackLayout Spacing="10">
+                                    <Label
+                                        IsVisible="{Binding Perfil.Biografia, Converter={StaticResource TemTexto}}"
+                                        LineHeight="1.3"
+                                        Text="{Binding Perfil.Biografia}" />
+                                    <HorizontalStackLayout IsVisible="{Binding Perfil.Formacao, Converter={StaticResource TemTexto}}" Spacing="8">
+                                        <Image Source="ic_mortarboard.png" Style="{StaticResource Icone}" />
+                                        <Label Text="{Binding Perfil.Formacao}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Image Source="ic_telephone.png" Style="{StaticResource Icone}" />
+                                        <Label Text="{Binding Perfil.Telefone, Converter={StaticResource Telefone}}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout IsVisible="{Binding Perfil.Cidade, Converter={StaticResource TemTexto}}" Spacing="8">
+                                        <Image Source="ic_geo_alt.png" Style="{StaticResource Icone}" />
+                                        <Label>
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Perfil.Cidade}" />
+                                                    <Span Text=" - " />
+                                                    <Span Text="{Binding Perfil.UF}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Label
+                                IsVisible="{Binding Perfil.Experiencias, Converter={StaticResource ListaComItens}}"
+                                Style="{StaticResource Rotulo}"
+                                Text="Experiências" />
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Perfil.Experiencias}" Spacing="10">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="c:ExperienciaInfo">
+                                        <Border Style="{StaticResource Card}">
+                                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                                <Image
+                                                    Source="ic_briefcase.png"
+                                                    Style="{StaticResource Icone}"
+                                                    VerticalOptions="Start" />
+                                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Cargo}" />
+                                                    <Label Text="{Binding Empresa}" />
+                                                    <Label Style="{StaticResource Legenda}">
+                                                        <Label.FormattedText>
+                                                            <FormattedString>
+                                                                <Span Text="{Binding ., Converter={StaticResource Periodo}}" />
+                                                                <Span Text=" · " />
+                                                                <Span Text="{Binding TipoContrato}" />
+                                                            </FormattedString>
+                                                        </Label.FormattedText>
+                                                    </Label>
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+
+                            <Label
+                                IsVisible="{Binding Perfil.Certificados, Converter={StaticResource ListaComItens}}"
+                                Style="{StaticResource Rotulo}"
+                                Text="Formação e certificados" />
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Perfil.Certificados}" Spacing="10">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="c:CertificadoInfo">
+                                        <Border Style="{StaticResource Card}">
+                                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                                <Image
+                                                    Source="ic_award.png"
+                                                    Style="{StaticResource Icone}"
+                                                    VerticalOptions="Start" />
+                                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Curso}" />
+                                                    <Label Text="{Binding Instituicao}" />
+                                                    <Label Style="{StaticResource Legenda}" Text="{Binding ., Converter={StaticResource Periodo}}" />
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                            <Label
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource Legenda}"
+                                Text="Para editar o currículo, use o portal web." />
+                        </VerticalStackLayout>
+
+                        <!-- Empresa: vagas publicadas -->
+                        <VerticalStackLayout IsVisible="{Binding EhEmpresa}" Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Style="{StaticResource Secao}" Text="Vagas publicadas" />
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource Legenda}"
+                                    Text="{Binding ResumoVagas}"
+                                    VerticalOptions="End" />
+                            </Grid>
+                            <Border IsVisible="{Binding MinhasVagas, Converter={StaticResource ListaVazia}}" Style="{StaticResource Card}">
+                                <Label
+                                    HorizontalTextAlignment="Center"
+                                    Style="{StaticResource Legenda}"
+                                    Text="Nenhuma vaga publicada. Publique vagas pelo portal web." />
+                            </Border>
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding MinhasVagas}" Spacing="10">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="c:VagaResumo">
+                                        <Border Style="{StaticResource Card}">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding AbrirCandidatosCommand, Source={RelativeSource AncestorType={x:Type vm:MinhaAreaViewModel}}, x:DataType=vm:MinhaAreaViewModel}" CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <VerticalStackLayout Spacing="2">
+                                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Titulo}" />
+                                                    <Label Style="{StaticResource Legenda}" Text="{Binding PublicadaEm, Converter={StaticResource TempoRelativo}, StringFormat='Publicada {0}'}" />
+                                                </VerticalStackLayout>
+                                                <Border Grid.Column="1" Style="{StaticResource Chip}" VerticalOptions="Center">
+                                                    <HorizontalStackLayout Spacing="4">
+                                                        <Image HeightRequest="12" Source="ic_people.png" WidthRequest="12" />
+                                                        <Label Style="{StaticResource ChipTexto}" Text="{Binding TotalCandidatos}" />
+                                                    </HorizontalStackLayout>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                        <!-- Administrador -->
+                        <Border IsVisible="{Binding EhAdministrador}" Style="{StaticResource Card}">
+                            <Label
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource Legenda}"
+                                Text="O painel de administração (profissionais, empresas e vagas) está disponível no portal web." />
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+</v:PaginaBase>

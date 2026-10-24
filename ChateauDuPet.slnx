@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ChateauDuPet.Api/ChateauDuPet.Api.csproj" />
+    <Project Path="src/ChateauDuPet.App.Core/ChateauDuPet.App.Core.csproj" />
+    <Project Path="src/ChateauDuPet.App/ChateauDuPet.App.csproj" />
+    <Project Path="src/ChateauDuPet.Contracts/ChateauDuPet.Contracts.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ChateauDuPet.Api.Tests/ChateauDuPet.Api.Tests.csproj" />
+    <Project Path="tests/ChateauDuPet.App.Core.Tests/ChateauDuPet.App.Core.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  testes:
+    name: Testes (API e ViewModels)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Testes de integração da API
+        run: dotnet test --project tests/ChateauDuPet.Api.Tests
+        env:
+          CHATEAU_TEST_DB: Host=localhost;Username=postgres;Password=postgres
+
+      - name: Testes dos ViewModels e do cliente da API
+        run: dotnet test --project tests/ChateauDuPet.App.Core.Tests
+
+  android:
+    name: App Android (.NET MAUI)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Workload do MAUI e SDK do Android
+        run: |
+          dotnet workload install maui-android
+          dotnet build src/ChateauDuPet.App -t:InstallAndroidDependencies -f net10.0-android \
+            -p:AndroidSdkDirectory="$ANDROID_HOME" -p:AcceptAndroidSDKLicenses=True
+
+      - name: Gera o APK (Release)
+        run: |
+          dotnet publish src/ChateauDuPet.App -f net10.0-android -c Release \
+            -p:AndroidSdkDirectory="$ANDROID_HOME" -o artefatos
+          cp artefatos/*-Signed.apk chateau-du-pet.apk
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: chateau-du-pet-apk
+          path: chateau-du-pet.apk
+
+  release:
+    name: Publica o APK na release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [testes, android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: chateau-du-pet-apk
+
+      - name: Cria a release com o APK
+        run: gh release create "$GITHUB_REF_NAME" chateau-du-pet.apk --repo "$GITHUB_REPOSITORY" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

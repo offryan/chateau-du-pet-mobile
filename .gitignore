@@ -1,0 +1,13 @@
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.swp
+TestResults/
+*.keystore
+*.jks
+.DS_Store
+appsettings.Local.json

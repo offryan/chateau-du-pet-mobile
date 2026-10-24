@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<v:PaginaBase
+    x:Class="ChateauDuPet.App.Views.VagaDetalhePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:comp="clr-namespace:ChateauDuPet.App.Views.Componentes"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:v="clr-namespace:ChateauDuPet.App.Views"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="Vaga"
+    x:DataType="vm:VagaDetalheViewModel">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Command="{Binding CompartilharCommand}"
+            IconImageSource="ic_share.png"
+            Text="Compartilhar" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView IsVisible="{Binding MostrarConteudo}">
+            <VerticalStackLayout Padding="16,8,16,24" Spacing="16">
+
+                <!-- Cabeçalho da vaga -->
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Style="{StaticResource Titulo}" Text="{Binding Vaga.Titulo}" />
+                        <HorizontalStackLayout Spacing="6">
+                            <Image Source="ic_building.png" Style="{StaticResource Icone}" />
+                            <Label FontFamily="OpenSansSemibold" Text="{Binding Vaga.Empresa}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout IsVisible="{Binding Vaga.Cidade, Converter={StaticResource TemTexto}}" Spacing="6">
+                            <Image Source="ic_geo_alt.png" Style="{StaticResource Icone}" />
+                            <Label Text="{Binding Vaga.Cidade}" />
+                        </HorizontalStackLayout>
+                        <BoxView HeightRequest="1" Color="{toolkit:AppThemeResource Borda}" />
+                        <Grid ColumnDefinitions="*,*">
+                            <HorizontalStackLayout Spacing="6">
+                                <Image Source="ic_clock.png" Style="{StaticResource Icone}" />
+                                <Label Style="{StaticResource Legenda}" Text="{Binding Vaga.PublicadaEm, Converter={StaticResource TempoRelativo}, StringFormat='Publicada {0}'}" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout
+                                Grid.Column="1"
+                                HorizontalOptions="End"
+                                Spacing="6">
+                                <Image Source="ic_people.png" Style="{StaticResource Icone}" />
+                                <Label Style="{StaticResource Legenda}" Text="{Binding Candidatos}" />
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Descrição -->
+                <VerticalStackLayout IsVisible="{Binding Vaga.Descricao, Converter={StaticResource TemTexto}}" Spacing="6">
+                    <Label Style="{StaticResource Secao}" Text="Sobre a vaga" />
+                    <Label LineHeight="1.3" Text="{Binding Vaga.Descricao}" />
+                </VerticalStackLayout>
+
+                <!-- Requisitos -->
+                <Label Style="{StaticResource Secao}" Text="Detalhes" />
+                <Border Style="{StaticResource Card}">
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="16">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Style="{StaticResource Rotulo}" Text="Contrato" />
+                            <Label Text="{Binding Vaga.TipoRegistro, TargetNullValue='Não informado'}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Style="{StaticResource Rotulo}" Text="Experiência" />
+                            <Label Text="{Binding Vaga.Experiencia, TargetNullValue='Não informado'}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="1" Spacing="2">
+                            <Label Style="{StaticResource Rotulo}" Text="Gênero" />
+                            <Label Text="{Binding Vaga.Sexo, TargetNullValue='Indiferente'}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Spacing="2">
+                            <Label Style="{StaticResource Rotulo}" Text="Validade" />
+                            <Label Text="{Binding Vaga.Validade, TargetNullValue='Não informada'}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Rodapé com a ação principal, sempre visível -->
+        <Border
+            Grid.Row="1"
+            Padding="16,12,16,16"
+            BackgroundColor="{toolkit:AppThemeResource Superficie}"
+            IsVisible="{Binding MostrarConteudo}"
+            StrokeShape="RoundRectangle 20,20,0,0"
+            StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.08"
+                    Radius="16"
+                    Offset="0,-4" />
+            </Border.Shadow>
+            <Grid>
+                <Button
+                    Command="{Binding CandidatarCommand}"
+                    IsVisible="{Binding PodeCandidatar}"
+                    Text="Quero me candidatar" />
+
+                <VerticalStackLayout IsVisible="{Binding JaCandidatado}" Spacing="4">
+                    <Border
+                        Padding="12"
+                        BackgroundColor="{toolkit:AppThemeResource SucessoSuave}"
+                        StrokeShape="RoundRectangle 14"
+                        StrokeThickness="0">
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                            <Image Source="ic_check_circle_fill.png" Style="{StaticResource Icone}">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{StaticResource Verde}" />
+                                </Image.Behaviors>
+                            </Image>
+                            <Label
+                                FontFamily="OpenSansSemibold"
+                                Text="Você se candidatou a esta vaga"
+                                TextColor="{toolkit:AppThemeResource Sucesso}" />
+                        </HorizontalStackLayout>
+                    </Border>
+                    <Button
+                        Command="{Binding CancelarCandidaturaCommand}"
+                        Style="{StaticResource BotaoTexto}"
+                        Text="Cancelar candidatura" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout IsVisible="{Binding ConvidarParaEntrar}" Spacing="8">
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource Legenda}"
+                        Text="Entre como profissional para se candidatar." />
+                    <Button Command="{Binding EntrarCommand}" Text="Entrar para me candidatar" />
+                </VerticalStackLayout>
+
+                <Label
+                    HorizontalTextAlignment="Center"
+                    IsVisible="{Binding SomenteProfissionais}"
+                    Style="{StaticResource Legenda}"
+                    Text="Somente contas de profissional podem se candidatar a vagas." />
+
+                <ActivityIndicator
+                    HorizontalOptions="End"
+                    IsRunning="{Binding Enviando}"
+                    IsVisible="{Binding Enviando}"
+                    Margin="0,0,16,0" />
+            </Grid>
+        </Border>
+
+        <comp:EstadoDaTela Grid.RowSpan="2" />
+    </Grid>
+</v:PaginaBase>

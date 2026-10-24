@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Identidade visual: o rosa do logo e o azul-marinho do portal web.
+         Cores do Android (barra de status) em Platforms/Android/Resources/values/colors.xml -->
+    <Color x:Key="Rosa">#E0157F</Color>
+    <Color x:Key="RosaEscuro">#B80F67</Color>
+    <Color x:Key="RosaNoEscuro">#FF5FAE</Color>
+    <Color x:Key="RosaClaro">#FDE7F2</Color>
+    <Color x:Key="RosaClaroNoEscuro">#3B1830</Color>
+    <Color x:Key="Marinho">#0D2A4E</Color>
+    <Color x:Key="Verde">#14A87A</Color>
+    <Color x:Key="VerdeNoEscuro">#3FD9A6</Color>
+    <Color x:Key="VerdeClaro">#DDF7EE</Color>
+    <Color x:Key="VerdeClaroNoEscuro">#12352B</Color>
+    <Color x:Key="Vermelho">#D93D5B</Color>
+    <Color x:Key="Branco">#FFFFFF</Color>
+
+    <Color x:Key="FundoClaro">#F7F4F8</Color>
+    <Color x:Key="FundoEscuro">#0E1320</Color>
+    <Color x:Key="SuperficieClara">#FFFFFF</Color>
+    <Color x:Key="SuperficieEscura">#1A2134</Color>
+    <Color x:Key="BordaClara">#EDE6EF</Color>
+    <Color x:Key="BordaEscura">#2B3550</Color>
+    <Color x:Key="TextoClaro">#0D2A4E</Color>
+    <Color x:Key="TextoEscuro">#EEF1F7</Color>
+    <Color x:Key="TextoSuaveClaro">#5E6B80</Color>
+    <Color x:Key="TextoSuaveEscuro">#A3ADC2</Color>
+</ResourceDictionary>

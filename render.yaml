@@ -1,0 +1,16 @@
+# Blueprint do Render: cria o serviço da API a partir do Dockerfile.
+# As variáveis marcadas com sync: false são preenchidas no painel do Render.
+services:
+  - type: web
+    name: chateau-du-pet-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: Jwt__Chave
+        generateValue: true

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ChateauDuPet.App.Views.SobrePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="Sobre"
+    x:DataType="vm:SobreViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+            <Grid HeightRequest="220">
+                <Image Aspect="AspectFill" Source="hero_beagle.jpg" />
+                <BoxView>
+                    <BoxView.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Offset="0.4" Color="Transparent" />
+                            <GradientStop Offset="1" Color="{toolkit:AppThemeResource Fundo}" />
+                        </LinearGradientBrush>
+                    </BoxView.Background>
+                </BoxView>
+            </Grid>
+
+            <VerticalStackLayout Padding="24,0,24,32" Spacing="16">
+                <Image
+                    Margin="0,-48,0,0"
+                    HeightRequest="96"
+                    HorizontalOptions="Start"
+                    Source="logo_chateau.png" />
+
+                <Label Style="{StaticResource Titulo}" Text="Conectando talentos ao mundo pet" />
+                <Label LineHeight="1.3" Text="A rede de pet shops Chateau Du Pet queria um lugar onde empresas do ramo pet pudessem encontrar profissionais com mais facilidade. Daí nasceu este portal de vagas, criado como projeto de conclusão de curso (TCC)." />
+                <Label LineHeight="1.3" Text="Neste app você encontra vagas para veterinários, auxiliares, tosadores e outras profissões do mundo pet, se candidata em poucos toques e acompanha suas candidaturas." />
+
+                <Button
+                    Command="{Binding AbrirLinkCommand}"
+                    CommandParameter="{x:Static vm:SobreViewModel.PortalWeb}"
+                    Text="Abrir o portal web" />
+                <Button
+                    Command="{Binding AbrirLinkCommand}"
+                    CommandParameter="{x:Static vm:SobreViewModel.SiteOficial}"
+                    Style="{StaticResource BotaoSecundario}"
+                    Text="Site do Chateau Du Pet" />
+
+                <Label Style="{StaticResource Secao}" Text="Sobre este app" />
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource Legenda}" Text="Versão 2026, reescrita em .NET MAUI a partir do app original em Xamarin.Forms (2021). Os dados de demonstração são fictícios." />
+                        <Label x:Name="Versao" Style="{StaticResource Legenda}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

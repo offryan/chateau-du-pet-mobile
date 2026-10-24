@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ChateauDuPet.App.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:ChateauDuPet.App.Core.ViewModels;assembly=ChateauDuPet.App.Core"
+    Title="Entrar"
+    x:DataType="vm:LoginViewModel"
+    Shell.NavBarIsVisible="False"
+    Shell.PresentationMode="ModalAnimated">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,16,24,32" Spacing="16">
+            <Button
+                Command="{Binding FecharCommand}"
+                HorizontalOptions="End"
+                Style="{StaticResource BotaoTexto}"
+                Text="Fechar" />
+
+            <Image
+                HeightRequest="150"
+                SemanticProperties.Description="Ilustração de login no celular"
+                Source="ilustra_login.png" />
+
+            <VerticalStackLayout Spacing="4">
+                <Label Style="{StaticResource Titulo}" Text="Entre na sua conta" />
+                <Label Style="{StaticResource Legenda}" Text="Use o mesmo e-mail e senha do portal web." />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="10">
+                <Border Style="{StaticResource Campo}">
+                    <Entry
+                        x:Name="CampoEmail"
+                        IsSpellCheckEnabled="False"
+                        IsTextPredictionEnabled="False"
+                        Keyboard="Email"
+                        Placeholder="E-mail"
+                        ReturnType="Next"
+                        SemanticProperties.Description="E-mail"
+                        Text="{Binding Email}" />
+                </Border>
+                <Border Style="{StaticResource Campo}">
+                    <Entry
+                        x:Name="CampoSenha"
+                        IsPassword="True"
+                        Placeholder="Senha"
+                        ReturnCommand="{Binding EntrarCommand}"
+                        ReturnType="Go"
+                        SemanticProperties.Description="Senha"
+                        Text="{Binding Senha}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <Label
+                IsVisible="{Binding TemErro}"
+                Text="{Binding Erro}"
+                TextColor="{StaticResource Vermelho}" />
+
+            <Grid>
+                <Button Command="{Binding EntrarCommand}" Text="Entrar" />
+                <ActivityIndicator
+                    Margin="0,0,16,0"
+                    HeightRequest="24"
+                    HorizontalOptions="End"
+                    IsRunning="{Binding Carregando}"
+                    IsVisible="{Binding Carregando}"
+                    Color="{StaticResource Branco}" />
+            </Grid>
+            <Label
+                HorizontalTextAlignment="Center"
+                IsVisible="{Binding Demorando}"
+                Style="{StaticResource Legenda}"
+                Text="O servidor de demonstração pode levar até 1 minuto para acordar..." />
+
+            <!-- Contas públicas da demonstração -->
+            <VerticalStackLayout Margin="0,16,0,0" Spacing="10">
+                <Label Style="{StaticResource Rotulo}" Text="Contas de demonstração" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding ContasDemo}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ContaDemo">
+                            <Border Padding="14" Style="{StaticResource Card}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding UsarContaDemoCommand, Source={RelativeSource AncestorType={x:Type vm:LoginViewModel}}, x:DataType=vm:LoginViewModel}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label FontFamily="OpenSansSemibold" Text="{Binding Perfil}" />
+                                        <Label Style="{StaticResource Legenda}" Text="{Binding Descricao}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="{Binding Email}"
+                                            TextColor="{toolkit:AppThemeResource Destaque}" />
+                                    </VerticalStackLayout>
+                                    <Label
+                                        Grid.Column="1"
+                                        FontFamily="OpenSansSemibold"
+                                        Text="Usar ›"
+                                        TextColor="{toolkit:AppThemeResource Destaque}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Style="{StaticResource Legenda}"
+                    Text="Senha das contas: demo1234. Os dados são fictícios e voltam ao original todo dia." />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
