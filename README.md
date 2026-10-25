@@ -6,7 +6,7 @@ Este repositório traz o app e a **API** que ele consome. A API usa o mesmo banc
 
 🔗 **API no ar:** https://chateau-du-pet-api.onrender.com/scalar ([teste em 2 minutos](#-teste-a-api-em-2-minutos))
 
-## 📱 O app em funcionamento
+## 📱 App mobile (Android)
 
 Gravação do APK rodando num celular Android, consumindo a API publicada:
 
@@ -16,9 +16,45 @@ https://github.com/user-attachments/assets/f57e9775-f1a2-4dfa-a64c-0eb34ffdba9b
 
 > O APK não vem da Play Store, então o Android pede para permitir a instalação de fontes desconhecidas e o Play Protect pode mostrar "app não verificado". Toque em **Instalar mesmo assim**.
 
-💻 **Windows:** [chateau-du-pet-windows.zip](https://github.com/offryan/chateau-du-pet-mobile/releases/latest/download/chateau-du-pet-windows.zip) (Windows 10 ou 11, 64 bits). Não precisa instalar: extraia o zip e abra o **Chateau Du Pet.exe**, que fica na pasta extraída ao lado de um `LEIA-ME.txt` (os arquivos do app ficam guardados na subpasta `app`).
+## 💻 App desktop (Windows)
 
-> Como o app não é assinado, o Windows pode mostrar "O Windows protegeu o computador". Clique em **Mais informações → Executar assim mesmo**.
+O mesmo app roda no Windows, numa janela redimensionável, e é por onde empresas e administradores fazem a gestão no PC. Ele substitui o antigo app desktop em Windows Forms do [projeto original](https://github.com/offryan/CHATEAU-DU-PET).
+
+📥 **Baixe:** [chateau-du-pet-windows.zip](https://github.com/offryan/chateau-du-pet-mobile/releases/latest/download/chateau-du-pet-windows.zip) (Windows 10 versão 1809 ou mais recente, ou Windows 11, 64 bits)
+
+**Como abrir** (não precisa instalar nada, nem o .NET):
+
+1. Extraia o zip (botão direito → **Extrair tudo**).
+2. Entre na pasta **Chateau Du Pet** e clique duas vezes em **Chateau Du Pet.exe**.
+3. No login, toque num dos cartões de **acesso rápido** (Profissional, Empresa ou Administrador) para entrar com a conta de demonstração.
+
+```
+Chateau Du Pet/
+├── Chateau Du Pet.exe   ← abre o app
+├── LEIA-ME.txt          ← instruções e contas de demonstração
+└── app/                 ← arquivos do aplicativo (precisam ficar ao lado do .exe)
+```
+
+> Como o app não é assinado digitalmente, o Windows pode mostrar "O Windows protegeu o computador". Clique em **Mais informações → Executar assim mesmo**.
+>
+> Para deixar à mão, mova a pasta inteira para onde preferir e crie um atalho na área de trabalho: botão direito em **Chateau Du Pet.exe** → **Enviar para** → **Área de trabalho (criar atalho)**.
+
+**O que dá para fazer no PC:**
+
+| Conta | Na prática |
+|---|---|
+| Empresa (`felipe@exemplo.com`) | **Minha área → + Publicar vaga** abre o formulário (título, experiência, tipo de registro, sexo, validade e descrição). Cada vaga tem **Editar** e **Ver candidatos**; tocar num candidato abre o currículo completo, com botões de e-mail e telefone |
+| Administrador (`admin@exemplo.com`) | **Minha área → Abrir painel de administração**: abas de Profissionais, Empresas e Vagas com contagem, busca (ignora acentos e maiúsculas), ver currículo/vaga e excluir com confirmação |
+| Profissional (`jucelino@exemplo.com`) | O mesmo do celular: vagas, candidaturas e currículo |
+
+**Do desktop de 2021 para o atual:**
+
+| | Desktop 2021 | Desktop atual |
+|---|---|---|
+| Tecnologia | Windows Forms, .NET Framework 4.7.2 | .NET MAUI 10 (WinUI 3), o mesmo código do app Android |
+| Acesso aos dados | Conexão direta ao banco (SQL Server no Azure), com a senha dentro do programa | Pela API, com login e token JWT; o programa não guarda nenhuma credencial do banco |
+| Distribuição | Compilar pelo Visual Studio | Zip pronto gerado pelo GitHub Actions a cada release |
+| Telas | Janelas sem borda, de tamanho fixo | Janela redimensionável, tema claro/escuro, conteúdo centralizado com largura confortável |
 
 ## ✨ O que o app faz
 
@@ -31,11 +67,10 @@ https://github.com/user-attachments/assets/f57e9775-f1a2-4dfa-a64c-0eb34ffdba9b
 
 Detalhes que fazem diferença no uso:
 
-- Login salvo com segurança no aparelho (Keystore no Android, Keychain no iOS) até o token vencer
+- Login salvo com segurança no aparelho (Keystore no Android, proteção de dados do Windows no PC) até o token vencer
 - Puxar para atualizar, estados de carregando/vazio/erro com "tentar de novo"
 - Busca enquanto digita, sem chamar a API a cada letra
 - Tema claro e escuro, seguindo o aparelho
-- No Windows, as telas ficam centralizadas com largura confortável em vez de esticar pela janela inteira
 - A API gratuita do Render "dorme" quando fica parada; o app espera até ela acordar, tenta de novo sozinho e avisa o usuário se demorar
 
 ### Contas de demonstração
