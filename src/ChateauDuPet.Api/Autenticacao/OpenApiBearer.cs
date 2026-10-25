@@ -17,7 +17,7 @@ internal sealed class OpenApiBearer : IOpenApiDocumentTransformer, IOpenApiOpera
         document.Info.Title = "Chateau Du Pet API";
         document.Info.Description =
             "API do app mobile do Chateau Du Pet: vagas do mundo pet, candidaturas e currículos. " +
-            "Para as rotas com cadeado, entre em POST /api/auth/login (ex.: jucelino@exemplo.com / demo1234) " +
+            "Para as rotas com cadeado, entre em POST /api/auth/login (ex.: candidato@demo.com / demo1234) " +
             "e use o token devolvido.";
 
         document.Components ??= new OpenApiComponents();

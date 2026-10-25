@@ -8,7 +8,7 @@ GET {{api}}/api/vagas?busca=veterin
 POST {{api}}/api/auth/login
 Content-Type: application/json
 
-{ "email": "jucelino@exemplo.com", "senha": "demo1234" }
+{ "email": "candidato@demo.com", "senha": "demo1234" }
 
 ###
 

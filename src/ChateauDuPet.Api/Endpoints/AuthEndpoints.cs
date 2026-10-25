@@ -27,7 +27,7 @@ public static class AuthEndpoints
             {
                 // Já vem preenchido no Scalar com a conta pública de demonstração: é só clicar em Send
                 if (operacao.RequestBody?.Content?.TryGetValue("application/json", out var json) == true)
-                    json.Example = new JsonObject { ["email"] = "jucelino@exemplo.com", ["senha"] = "demo1234" };
+                    json.Example = new JsonObject { ["email"] = "candidato@demo.com", ["senha"] = "demo1234" };
                 return Task.CompletedTask;
             });
 

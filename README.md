@@ -43,9 +43,9 @@ Chateau Du Pet/
 
 | Conta | Na prática |
 |---|---|
-| Empresa (`felipe@exemplo.com`) | **Minha área → + Publicar vaga** abre o formulário (título, experiência, tipo de registro, sexo, validade e descrição). Cada vaga tem **Editar** e **Ver candidatos**; tocar num candidato abre o currículo completo, com botões de e-mail e telefone |
-| Administrador (`admin@exemplo.com`) | **Minha área → Abrir painel de administração**: abas de Profissionais, Empresas e Vagas com contagem, busca (ignora acentos e maiúsculas), ver currículo/vaga e excluir com confirmação |
-| Profissional (`jucelino@exemplo.com`) | O mesmo do celular: vagas, candidaturas e currículo |
+| Empresa (`empresa@demo.com`) | **Minha área → + Publicar vaga** abre o formulário (título, experiência, tipo de registro, sexo, validade e descrição). Cada vaga tem **Editar** e **Ver candidatos**; tocar num candidato abre o currículo completo, com botões de e-mail e telefone |
+| Administrador (`admin@demo.com`) | **Minha área → Abrir painel de administração**: abas de Profissionais, Empresas e Vagas com contagem, busca (ignora acentos e maiúsculas), ver currículo/vaga e excluir com confirmação |
+| Profissional (`candidato@demo.com`) | O mesmo do celular: vagas, candidaturas e currículo |
 
 **Do desktop de 2021 para o atual:**
 
@@ -79,9 +79,9 @@ Senha de todas: `demo1234` (os dados são fictícios e voltam ao original todo d
 
 | Perfil | E-mail |
 |---|---|
-| Profissional | `jucelino@exemplo.com` |
-| Empresa | `felipe@exemplo.com` |
-| Administrador | `admin@exemplo.com` |
+| Profissional | `candidato@demo.com` |
+| Empresa | `empresa@demo.com` |
+| Administrador | `admin@demo.com` |
 
 ## 🧪 Teste a API em 2 minutos
 
@@ -110,9 +110,9 @@ Dá para ver a API funcionando direto no navegador, sem instalar nada, pela docu
 | Ver uma vaga e se você já se candidatou | `GET /api/vagas/2` | Opcional |
 | Se candidatar (e depois cancelar) | `POST` e `DELETE /api/vagas/2/candidatura` | Sim, de profissional |
 | Ver as próprias candidaturas | `GET /api/me/candidaturas` | Sim, de profissional |
-| Ver as vagas da empresa e os candidatos | `GET /api/me/vagas` e `/api/me/vagas/1/candidatos` | Sim, de empresa (`felipe@exemplo.com`) |
+| Ver as vagas da empresa e os candidatos | `GET /api/me/vagas` e `/api/me/vagas/1/candidatos` | Sim, de empresa (`empresa@demo.com`) |
 | Publicar uma vaga | `POST /api/me/vagas` | Sim, de empresa |
-| Listar profissionais e empresas | `GET /api/admin/profissionais` e `/api/admin/empresas` | Sim, de administrador (`admin@exemplo.com`) |
+| Listar profissionais e empresas | `GET /api/admin/profissionais` e `/api/admin/empresas` | Sim, de administrador (`admin@demo.com`) |
 
 Repare nas regras de acesso: com o token de profissional, as rotas de empresa e de administrador respondem `403`; uma empresa que tenta editar a vaga de outra recebe `404`; sem token, as rotas protegidas respondem `401`; candidatar-se duas vezes à mesma vaga responde `409` com a mensagem "Você já se candidatou a esta vaga."
 

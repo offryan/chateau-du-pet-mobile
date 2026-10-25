@@ -8,8 +8,8 @@ namespace ChateauDuPet.Api.Tests;
 [Collection(ColecaoDaApi.Nome)]
 public class ApiTests(ApiFixture api) : IAsyncLifetime
 {
-    private const string Profissional = "jucelino@exemplo.com"; // candidato à vaga 1 no seed
-    private const string Empresa = "felipe@exemplo.com";        // dona das vagas 1 e 2
+    private const string Profissional = "candidato@demo.com"; // candidato à vaga 1 no seed
+    private const string Empresa = "empresa@demo.com";        // dona das vagas 1 e 2
 
     private static readonly ChateauJsonContext Json = ChateauJsonContext.Default;
     private static CancellationToken CT => TestContext.Current.CancellationToken;
@@ -80,7 +80,7 @@ public class ApiTests(ApiFixture api) : IAsyncLifetime
     public async Task Login_valido_devolve_token_e_tipo_do_usuario()
     {
         var resposta = await api.CreateClient().PostAsJsonAsync("/api/auth/login",
-            new LoginRequest("  JUCELINO@exemplo.com ", "demo1234"), Json.LoginRequest, CT);
+            new LoginRequest("  CANDIDATO@demo.com ", "demo1234"), Json.LoginRequest, CT);
         var login = await resposta.Content.ReadFromJsonAsync(Json.LoginResponse, CT);
 
         Assert.Equal(HttpStatusCode.OK, resposta.StatusCode);
@@ -91,7 +91,7 @@ public class ApiTests(ApiFixture api) : IAsyncLifetime
     }
 
     [Theory]
-    [InlineData("jucelino@exemplo.com", "senha-errada")]
+    [InlineData("candidato@demo.com", "senha-errada")]
     [InlineData("ninguem@exemplo.com", "demo1234")]
     public async Task Login_invalido_retorna_401_sem_revelar_se_o_email_existe(string email, string senha)
     {
@@ -246,7 +246,7 @@ public class ApiTests(ApiFixture api) : IAsyncLifetime
         // O login já vem preenchido com a conta de demonstração no Scalar
         var exemploDoLogin = raiz.GetProperty("paths").GetProperty("/api/auth/login").GetProperty("post")
             .GetProperty("requestBody").GetProperty("content").GetProperty("application/json").GetProperty("example");
-        Assert.Equal("jucelino@exemplo.com", exemploDoLogin.GetProperty("email").GetString());
+        Assert.Equal("candidato@demo.com", exemploDoLogin.GetProperty("email").GetString());
         Assert.Equal("demo1234", exemploDoLogin.GetProperty("senha").GetString());
     }
 

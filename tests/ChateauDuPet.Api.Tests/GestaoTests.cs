@@ -4,14 +4,14 @@ using ChateauDuPet.Contracts;
 
 namespace ChateauDuPet.Api.Tests;
 
-// Dados do seed: a empresa felipe@ é dona das vagas 1 e 2; a vaga 3 é de outra empresa.
+// Dados do seed: a conta empresa@demo.com é dona das vagas 1 e 2; a vaga 3 é de outra empresa.
 // Candidaturas: profissionais 1 e 2 na vaga 1, profissional 4 na vaga 3; o 3 não se candidatou.
 [Collection(ColecaoDaApi.Nome)]
 public class GestaoTests(ApiFixture api) : IAsyncLifetime
 {
-    private const string Empresa = "felipe@exemplo.com";
-    private const string Profissional = "jucelino@exemplo.com";
-    private const string Admin = "admin@exemplo.com";
+    private const string Empresa = "empresa@demo.com";
+    private const string Profissional = "candidato@demo.com";
+    private const string Admin = "admin@demo.com";
 
     private static readonly ChateauJsonContext Json = ChateauJsonContext.Default;
     private static CancellationToken CT => TestContext.Current.CancellationToken;

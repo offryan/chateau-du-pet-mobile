@@ -215,7 +215,7 @@ public class ListasReagemAGestaoTests : TesteDeViewModel
     [Fact]
     public async Task Administrador_abre_o_painel_pela_minha_area()
     {
-        await Sessao.IniciarAsync(Dados.Login(new UsuarioInfo(1, "Administrador Demo", "admin@exemplo.com", TipoUsuario.Administrativo)));
+        await Sessao.IniciarAsync(Dados.Login(new UsuarioInfo(1, "Administrador Demo", "admin@demo.com", TipoUsuario.Administrativo)));
         var vm = new MinhaAreaViewModel(Api, Sessao, Navegacao, Plataforma, Alteracoes);
 
         await vm.AoAparecerAsync();
@@ -277,10 +277,10 @@ public class AdministracaoViewModelTests : TesteDeViewModel
     {
         Api.ProfissionaisAdmin =
         [
-            new(1, "Jucelino Silva", "jucelino", "jucelino@exemplo.com", "11911290115", "São Paulo"),
+            new(1, "Jucelino Silva", "jucelino", "candidato@demo.com", "11911290115", "São Paulo"),
             new(3, "Jessica Ferreira", "jessica", "jessica@exemplo.com", "11911290112", "Campinas")
         ];
-        Api.EmpresasAdmin = [new(1, "Salvadores do Bem", "Felipe", "felipe@exemplo.com", null, 2)];
+        Api.EmpresasAdmin = [new(1, "Salvadores do Bem", "Felipe", "empresa@demo.com", null, 2)];
         Api.AoListarVagas = _ => Task.FromResult<IReadOnlyList<VagaResumo>>([Dados.Resumo(1), Dados.Resumo(2, "Zootecnista")]);
         return new AdministracaoViewModel(Api, Navegacao, Plataforma, Alteracoes);
     }

@@ -24,7 +24,7 @@ public class SessaoTests
         Assert.Equal(1, alteracoes);
         Assert.True(reaberta.Logado);
         Assert.Equal(Dados.Profissional, reaberta.Usuario);
-        Assert.Equal("token-jucelino@exemplo.com", reaberta.Token);
+        Assert.Equal("token-candidato@demo.com", reaberta.Token);
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public class ChateauApiTests
         await api.CandidatarAsync(7, CT);
         await Assert.ThrowsAsync<ApiException>(() => api.EntrarAsync("x@x.com", "errada", CT));
 
-        Assert.Equal("Bearer token-jucelino@exemplo.com", handler.Requisicoes[0].Headers.Authorization!.ToString());
+        Assert.Equal("Bearer token-candidato@demo.com", handler.Requisicoes[0].Headers.Authorization!.ToString());
         Assert.Null(handler.Requisicoes[1].Headers.Authorization);
         Assert.True(_sessao.Logado); // senha errada no login não derruba a sessão atual
     }

@@ -254,7 +254,7 @@ public class LoginViewModelTests : TesteDeViewModel
         var vm = Criar();
         Assert.False(vm.EntrarCommand.CanExecute(null));
 
-        vm.Email = "jucelino@exemplo.com";
+        vm.Email = "candidato@demo.com";
         Assert.False(vm.EntrarCommand.CanExecute(null));
 
         vm.Senha = "demo1234";
@@ -266,7 +266,7 @@ public class LoginViewModelTests : TesteDeViewModel
     {
         Api.AoEntrar = (email, senha) => Task.FromResult(Dados.Login(Dados.Profissional));
         var vm = Criar();
-        vm.Email = "  jucelino@exemplo.com ";
+        vm.Email = "  candidato@demo.com ";
         vm.Senha = "demo1234";
 
         await vm.EntrarCommand.ExecuteAsync(null);
@@ -280,7 +280,7 @@ public class LoginViewModelTests : TesteDeViewModel
     public async Task Senha_errada_mostra_erro_e_continua_na_tela()
     {
         var vm = Criar();
-        vm.Email = "jucelino@exemplo.com";
+        vm.Email = "candidato@demo.com";
         vm.Senha = "errada";
 
         await vm.EntrarCommand.ExecuteAsync(null);
@@ -303,7 +303,7 @@ public class LoginViewModelTests : TesteDeViewModel
 
         await vm.UsarContaDemoCommand.ExecuteAsync(vm.ContasDemo.Single(c => c.Perfil == "Empresa"));
 
-        Assert.Equal("felipe@exemplo.com", emailUsado);
+        Assert.Equal("empresa@demo.com", emailUsado);
         Assert.Equal(TipoUsuario.Empresa, Sessao.Usuario?.Tipo);
     }
 
@@ -313,7 +313,7 @@ public class LoginViewModelTests : TesteDeViewModel
         var vm = Criar();
 
         Assert.Equal(["Profissional", "Empresa", "Administrador"], vm.ContasDemo.Select(c => c.Perfil));
-        Assert.Contains(vm.ContasDemo, c => c.Email == "admin@exemplo.com");
+        Assert.Contains(vm.ContasDemo, c => c.Email == "admin@demo.com");
     }
 }
 
@@ -321,7 +321,7 @@ public class MinhaAreaViewModelTests : TesteDeViewModel
 {
     private MinhaAreaViewModel Criar() => new(Api, Sessao, Navegacao, Plataforma, Alteracoes);
 
-    private static readonly PerfilProfissional Perfil = new(1, "Jucelino Silva", "jucelino@exemplo.com", "11911290115",
+    private static readonly PerfilProfissional Perfil = new(1, "Jucelino Silva", "candidato@demo.com", "11911290115",
         "Apaixonado por animais", "Superior Completo", "São Paulo", "SP",
         [new ExperienciaInfo("Auxiliar veterinário", "MedPet", "CLT", "São Paulo", new DateOnly(2020, 2, 1), null)],
         []);
@@ -413,7 +413,7 @@ public class CandidatosViewModelTests : TesteDeViewModel
     [Fact]
     public async Task Lista_candidatos_e_abre_email_com_assunto_da_vaga()
     {
-        Api.Candidatos = [new CandidatoResumo(1, "Jucelino Silva", "jucelino@exemplo.com", "Superior Completo", new DateTime(2026, 10, 20))];
+        Api.Candidatos = [new CandidatoResumo(1, "Jucelino Silva", "candidato@demo.com", "Superior Completo", new DateTime(2026, 10, 20))];
         var vm = new CandidatosViewModel(Api, Navegacao, Plataforma);
         vm.Abrir(1, "Médico Veterinário");
 
@@ -422,6 +422,6 @@ public class CandidatosViewModelTests : TesteDeViewModel
 
         Assert.Equal("1 candidato", vm.Resumo);
         Assert.False(vm.SemCandidatos);
-        Assert.Equal(["mailto:jucelino@exemplo.com?subject=Sua%20candidatura%3A%20M%C3%A9dico%20Veterin%C3%A1rio"], Plataforma.Links);
+        Assert.Equal(["mailto:candidato@demo.com?subject=Sua%20candidatura%3A%20M%C3%A9dico%20Veterin%C3%A1rio"], Plataforma.Links);
     }
 }

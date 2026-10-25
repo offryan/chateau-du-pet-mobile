@@ -14,9 +14,9 @@ Se aparecer "O Windows protegeu o computador", clique em
 o app não é assinado digitalmente.
 
 Contas de demonstração (senha de todas: demo1234)
-  Profissional:  jucelino@exemplo.com
-  Empresa:       felipe@exemplo.com
-  Administrador: admin@exemplo.com
+  Profissional:  candidato@demo.com
+  Empresa:       empresa@demo.com
+  Administrador: admin@demo.com
 
 Requer Windows 10 (versão 1809 ou mais recente) ou Windows 11, 64 bits.
 Código-fonte e outras versões: https://github.com/offryan/chateau-du-pet-mobile

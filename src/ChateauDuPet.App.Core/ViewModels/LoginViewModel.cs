@@ -12,9 +12,9 @@ public partial class LoginViewModel(IChateauApi api, Sessao sessao, INavegacao n
 
     public IReadOnlyList<ContaDemo> ContasDemo { get; } =
     [
-        new("Profissional", "jucelino@exemplo.com", "Ver currículo e se candidatar"),
-        new("Empresa", "felipe@exemplo.com", "Publicar vagas e ver candidatos"),
-        new("Administrador", "admin@exemplo.com", "Gerenciar profissionais, empresas e vagas")
+        new("Profissional", "candidato@demo.com", "Ver currículo e se candidatar"),
+        new("Empresa", "empresa@demo.com", "Publicar vagas e ver candidatos"),
+        new("Administrador", "admin@demo.com", "Gerenciar profissionais, empresas e vagas")
     ];
 
     [ObservableProperty]

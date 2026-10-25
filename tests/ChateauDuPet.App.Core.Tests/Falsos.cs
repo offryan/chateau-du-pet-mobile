@@ -9,8 +9,8 @@ namespace ChateauDuPet.App.Core.Tests;
 
 public static class Dados
 {
-    public static readonly UsuarioInfo Profissional = new(1, "Jucelino Silva", "jucelino@exemplo.com", TipoUsuario.Profissional);
-    public static readonly UsuarioInfo Empresa = new(1, "Salvadores do Bem", "felipe@exemplo.com", TipoUsuario.Empresa);
+    public static readonly UsuarioInfo Profissional = new(1, "Jucelino Silva", "candidato@demo.com", TipoUsuario.Profissional);
+    public static readonly UsuarioInfo Empresa = new(1, "Salvadores do Bem", "empresa@demo.com", TipoUsuario.Empresa);
 
     public static VagaResumo Resumo(int id, string titulo = "Médico Veterinário") =>
         new(id, titulo, "Salvadores do Bem", "São Paulo", "CLT", new DateTime(2026, 10, 20), 2);
