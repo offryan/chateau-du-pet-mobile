@@ -11,18 +11,18 @@ public static class MinhaAreaEndpoints
 {
     public static void MapMinhaArea(this IEndpointRouteBuilder app)
     {
-        var profissional = app.MapGroup("/api/me").WithTags("Profissional").RequireAuthorization(Papeis.Profissional);
+        var profissional = app.MapGroup("/api/me").WithTags("Candidato").RequireAuthorization(Papeis.Profissional);
 
         profissional.MapGet("/candidaturas", async (ClaimsPrincipal usuario, VagasRepositorio vagas, CancellationToken ct) =>
                 TypedResults.Ok(await vagas.CandidaturasDoProfissionalAsync(usuario.Id(), ct)))
-            .WithSummary("Vagas em que o profissional se candidatou");
+            .WithSummary("Vagas em que o candidato se inscreveu");
 
         profissional.MapGet("/perfil", async Task<Results<Ok<PerfilProfissional>, NotFound>> (
                 ClaimsPrincipal usuario, PerfilRepositorio perfis, CancellationToken ct) =>
                 await perfis.ObterProfissionalAsync(usuario.Id(), ct) is { } perfil
                     ? TypedResults.Ok(perfil)
                     : TypedResults.NotFound())
-            .WithSummary("Currículo do profissional: dados, experiências e certificados");
+            .WithSummary("Currículo do candidato: dados, experiências e certificados");
 
         var empresa = app.MapGroup("/api/me/vagas").WithTags("Empresa").RequireAuthorization(Papeis.Empresa);
 

@@ -34,7 +34,7 @@
                     Source="logo_chateau.png" />
 
                 <Label Style="{StaticResource Titulo}" Text="Conectando talentos ao mundo pet" />
-                <Label LineHeight="1.3" Text="A rede de pet shops Chateau Du Pet queria um lugar onde empresas do ramo pet pudessem encontrar profissionais com mais facilidade. Daí nasceu este portal de vagas, criado como projeto de conclusão de curso (TCC)." />
+                <Label LineHeight="1.3" Text="A rede de pet shops Chateau Du Pet queria um lugar onde empresas do ramo pet pudessem encontrar candidatos com mais facilidade. Daí nasceu este portal de vagas, criado como projeto de conclusão de curso (TCC)." />
                 <Label LineHeight="1.3" Text="Neste app você encontra vagas para veterinários, auxiliares, tosadores e outras profissões do mundo pet, se candidata em poucos toques e acompanha suas candidaturas." />
 
                 <Button

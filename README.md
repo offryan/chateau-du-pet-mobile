@@ -91,13 +91,13 @@ Dá para ver a API funcionando direto no navegador, sem instalar nada, pela docu
 
 **1. Abra a documentação:** https://chateau-du-pet-api.onrender.com/scalar
 
-**2. Faça login.** No menu à esquerda, abra **Autenticação → Entra com e-mail e senha** e clique em **Test Request**. O corpo já vem preenchido com a conta de demonstração do profissional; é só clicar em **Send**. A resposta traz o `token`, a validade e os dados do usuário.
+**2. Faça login.** No menu à esquerda, abra **Autenticação → Entra com e-mail e senha** e clique em **Test Request**. O corpo já vem preenchido com a conta de demonstração do candidato; é só clicar em **Send**. A resposta traz o `token`, a validade e os dados do usuário.
 
 ![Login no Scalar: POST /api/auth/login com a conta de demonstração, resposta 200 com o token e os dados do usuário](docs/img/scalar-login.png)
 
 **3. Copie o `token`** da resposta (sem as aspas).
 
-**4. Veja o currículo.** Abra **Profissional → Currículo do profissional**, clique em **Test Request**, escolha **Bearer** em *Authentication*, cole o token e clique em **Send**. Voltam os dados, as experiências e os certificados do profissional.
+**4. Veja o currículo.** Abra **Candidato → Currículo do candidato**, clique em **Test Request**, escolha **Bearer** em *Authentication*, cole o token e clique em **Send**. Voltam os dados, as experiências e os certificados do candidato.
 
 ![GET /api/me/perfil com o token: resposta 200 com experiências e certificados](docs/img/scalar-curriculo.png)
 
@@ -108,13 +108,13 @@ Dá para ver a API funcionando direto no navegador, sem instalar nada, pela docu
 | Listar todas as vagas | `GET /api/vagas` | Não |
 | Buscar vagas (ex.: `busca=veterin`) | `GET /api/vagas?busca=veterin` | Não |
 | Ver uma vaga e se você já se candidatou | `GET /api/vagas/2` | Opcional |
-| Se candidatar (e depois cancelar) | `POST` e `DELETE /api/vagas/2/candidatura` | Sim, de profissional |
-| Ver as próprias candidaturas | `GET /api/me/candidaturas` | Sim, de profissional |
+| Se candidatar (e depois cancelar) | `POST` e `DELETE /api/vagas/2/candidatura` | Sim, de candidato |
+| Ver as próprias candidaturas | `GET /api/me/candidaturas` | Sim, de candidato |
 | Ver as vagas da empresa e os candidatos | `GET /api/me/vagas` e `/api/me/vagas/1/candidatos` | Sim, de empresa (`empresa@demo.com`) |
 | Publicar uma vaga | `POST /api/me/vagas` | Sim, de empresa |
-| Listar profissionais e empresas | `GET /api/admin/profissionais` e `/api/admin/empresas` | Sim, de administrador (`admin@demo.com`) |
+| Listar candidatos e empresas | `GET /api/admin/profissionais` e `/api/admin/empresas` | Sim, de administrador (`admin@demo.com`) |
 
-Repare nas regras de acesso: com o token de profissional, as rotas de empresa e de administrador respondem `403`; uma empresa que tenta editar a vaga de outra recebe `404`; sem token, as rotas protegidas respondem `401`; candidatar-se duas vezes à mesma vaga responde `409` com a mensagem "Você já se candidatou a esta vaga."
+Repare nas regras de acesso: com o token de candidato, as rotas de empresa e de administrador respondem `403`; uma empresa que tenta editar a vaga de outra recebe `404`; sem token, as rotas protegidas respondem `401`; candidatar-se duas vezes à mesma vaga responde `409` com a mensagem "Você já se candidatou a esta vaga."
 
 ## 🔄 Do Xamarin para o .NET MAUI
 
@@ -177,10 +177,10 @@ Documentação interativa em `/scalar` (OpenAPI em `/openapi/v1.json`).
 | `POST` | `/api/auth/login` | público (limitado a 10 tentativas/min por IP) |
 | `GET` | `/api/auth/eu` | logado |
 | `GET` | `/api/vagas?busca=` | público |
-| `GET` | `/api/vagas/{id}` | público (para profissional, informa se já se candidatou) |
-| `POST` / `DELETE` | `/api/vagas/{id}/candidatura` | profissional |
-| `GET` | `/api/me/candidaturas` | profissional |
-| `GET` | `/api/me/perfil` | profissional |
+| `GET` | `/api/vagas/{id}` | público (para candidato, informa se já se candidatou) |
+| `POST` / `DELETE` | `/api/vagas/{id}/candidatura` | candidato |
+| `GET` | `/api/me/candidaturas` | candidato |
+| `GET` | `/api/me/perfil` | candidato |
 | `GET` | `/api/me/vagas` | empresa |
 | `GET` | `/api/me/vagas/{id}/candidatos` | empresa (só das próprias vagas) |
 | `POST` | `/api/me/vagas` | empresa |
@@ -248,7 +248,7 @@ A cada push na `main`, o GitHub Actions roda os testes e gera o APK e o app Wind
 
 - Senhas conferidas com **BCrypt**; login que falha não revela se o e-mail existe (nem pelo tempo de resposta)
 - Token **JWT** assinado, com validade de 7 dias, guardado no armazenamento seguro do aparelho
-- Rotas de profissional e empresa usam sempre o id do token, nunca um id vindo da URL: ninguém vê ou altera dados de outra conta (uma empresa só edita e exclui as próprias vagas e só vê o currículo de quem se candidatou a elas)
+- Rotas de candidato e empresa usam sempre o id do token, nunca um id vindo da URL: ninguém vê ou altera dados de outra conta (uma empresa só edita e exclui as próprias vagas e só vê o currículo de quem se candidatou a elas)
 - SQL sempre parametrizado; curingas da busca (`%`, `_`) são escapados
 - Limite de tentativas de login por IP
 - No banco, a API usa um usuário próprio com permissões mínimas, e o Row Level Security do Supabase continua bloqueando a API pública

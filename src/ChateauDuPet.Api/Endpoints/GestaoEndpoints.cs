@@ -50,18 +50,18 @@ public static class GestaoEndpoints
             })
             .RequireAuthorization(Papeis.Recrutador)
             .WithTags("Empresa")
-            .WithSummary("Currículo de um profissional: empresas veem só os próprios candidatos; administradores, todos");
+            .WithSummary("Currículo de um candidato: empresas veem só os próprios candidatos; administradores, todos");
 
         var admin = app.MapGroup("/api/admin").WithTags("Administração").RequireAuthorization(Papeis.Administrativo);
 
         admin.MapGet("/profissionais", async (AdminRepositorio cadastro, CancellationToken ct) =>
                 TypedResults.Ok(await cadastro.ListarProfissionaisAsync(ct)))
-            .WithSummary("Lista os profissionais cadastrados");
+            .WithSummary("Lista os candidatos cadastrados");
 
         admin.MapDelete("/profissionais/{id:int}", async Task<Results<NoContent, NotFound>> (
                 int id, AdminRepositorio cadastro, CancellationToken ct) =>
                 await cadastro.ExcluirProfissionalAsync(id, ct) ? TypedResults.NoContent() : TypedResults.NotFound())
-            .WithSummary("Exclui um profissional com currículo e candidaturas");
+            .WithSummary("Exclui um candidato com currículo e candidaturas");
 
         admin.MapGet("/empresas", async (AdminRepositorio cadastro, CancellationToken ct) =>
                 TypedResults.Ok(await cadastro.ListarEmpresasAsync(ct)))

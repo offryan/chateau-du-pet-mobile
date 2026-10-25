@@ -24,7 +24,7 @@ public static class VagasEndpoints
                     ? TypedResults.Ok(vaga)
                     : TypedResults.NotFound();
             })
-            .WithSummary("Detalhes de uma vaga; para profissionais, informa se já se candidatou");
+            .WithSummary("Detalhes de uma vaga; para candidatos, informa se já se candidatou");
 
         grupo.MapPost("/{id:int}/candidatura", async Task<Results<NoContent, NotFound, ProblemHttpResult>> (
                 int id, ClaimsPrincipal usuario, VagasRepositorio vagas, CancellationToken ct) =>
@@ -35,7 +35,7 @@ public static class VagasEndpoints
                     _ => TypedResults.Problem("Você já se candidatou a esta vaga.", statusCode: StatusCodes.Status409Conflict)
                 })
             .RequireAuthorization(Papeis.Profissional)
-            .WithSummary("Candidata o profissional logado à vaga");
+            .WithSummary("Inscreve o candidato logado na vaga");
 
         grupo.MapDelete("/{id:int}/candidatura", async Task<Results<NoContent, NotFound>> (
                 int id, ClaimsPrincipal usuario, VagasRepositorio vagas, CancellationToken ct) =>
@@ -43,6 +43,6 @@ public static class VagasEndpoints
                     ? TypedResults.NoContent()
                     : TypedResults.NotFound())
             .RequireAuthorization(Papeis.Profissional)
-            .WithSummary("Cancela a candidatura do profissional logado");
+            .WithSummary("Cancela a candidatura do candidato logado");
     }
 }
