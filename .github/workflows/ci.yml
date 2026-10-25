@@ -106,16 +106,18 @@ jobs:
       - name: Monta a pasta com o iniciador
         shell: pwsh
         run: |
-          $raiz = "pacote/Chateau Du Pet"
-          $icone = Get-ChildItem "$raiz/app" -Filter *.ico -Recurse | Select-Object -First 1
+          # O csc trata "/" como início de opção: todos os caminhos vão completos, com "\"
+          $raiz = (Resolve-Path "pacote\Chateau Du Pet").Path
+          $fontes = (Resolve-Path "build\windows").Path
+          $icone = Get-ChildItem "$raiz\app" -Filter *.ico -Recurse | Select-Object -First 1
           $argumentos = @(
             "/nologo", "/target:winexe", "/optimize+", "/codepage:65001",
-            "/r:System.Windows.Forms.dll", "/out:$raiz/Chateau Du Pet.exe"
+            "/r:System.Windows.Forms.dll", "/out:$raiz\Chateau Du Pet.exe"
           )
           if ($icone) { $argumentos += "/win32icon:$($icone.FullName)" }
-          & "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe" @argumentos build/windows/Iniciar.cs
+          & "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe" @argumentos "$fontes\Iniciar.cs"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          Copy-Item build/windows/LEIA-ME.txt $raiz
+          Copy-Item "$fontes\LEIA-ME.txt" $raiz
           Get-ChildItem $raiz | Format-Table Name, Length
 
       - name: Compacta em zip
