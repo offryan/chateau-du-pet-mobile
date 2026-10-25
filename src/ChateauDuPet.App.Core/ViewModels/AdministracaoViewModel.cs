@@ -43,7 +43,7 @@ public partial class AdministracaoViewModel(
     public IReadOnlyList<VagaResumo> Vagas =>
         Filtrar(_vagas, v => [v.Titulo, v.Empresa, v.Cidade]);
 
-    public string TituloProfissionais => $"Profissionais ({_profissionais.Count})";
+    public string TituloProfissionais => $"Candidatos ({_profissionais.Count})";
     public string TituloEmpresas => $"Empresas ({_empresas.Count})";
     public string TituloVagas => $"Vagas ({_vagas.Count})";
 
@@ -90,9 +90,9 @@ public partial class AdministracaoViewModel(
 
     [RelayCommand(CanExecute = nameof(PodeExcluir))]
     private Task ExcluirProfissionalAsync(ProfissionalAdmin? p) => p is null ? Task.CompletedTask : ExcluirAsync(
-        "Excluir profissional",
+        "Excluir candidato",
         $"{p.Nome} será excluído junto com o currículo e as candidaturas. Não dá para desfazer.",
-        () => api.ExcluirProfissionalAsync(p.Id), "Profissional excluído.");
+        () => api.ExcluirProfissionalAsync(p.Id), "Candidato excluído.");
 
     [RelayCommand(CanExecute = nameof(PodeExcluir))]
     private Task ExcluirEmpresaAsync(EmpresaAdmin? e) => e is null ? Task.CompletedTask : ExcluirAsync(

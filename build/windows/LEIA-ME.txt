@@ -14,7 +14,7 @@ Se aparecer "O Windows protegeu o computador", clique em
 o app não é assinado digitalmente.
 
 Contas de demonstração (senha de todas: demo1234)
-  Profissional:  candidato@demo.com
+  Candidato:     candidato@demo.com
   Empresa:       empresa@demo.com
   Administrador: admin@demo.com
 

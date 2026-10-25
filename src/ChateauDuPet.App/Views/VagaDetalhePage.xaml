@@ -137,7 +137,7 @@
                     <Label
                         HorizontalTextAlignment="Center"
                         Style="{StaticResource Legenda}"
-                        Text="Entre como profissional para se candidatar." />
+                        Text="Entre como candidato para se candidatar." />
                     <Button Command="{Binding EntrarCommand}" Text="Entrar para me candidatar" />
                 </VerticalStackLayout>
 
@@ -145,7 +145,7 @@
                     HorizontalTextAlignment="Center"
                     IsVisible="{Binding SomenteProfissionais}"
                     Style="{StaticResource Legenda}"
-                    Text="Somente contas de profissional podem se candidatar a vagas." />
+                    Text="Somente contas de candidato podem se candidatar a vagas." />
 
                 <ActivityIndicator
                     HorizontalOptions="End"

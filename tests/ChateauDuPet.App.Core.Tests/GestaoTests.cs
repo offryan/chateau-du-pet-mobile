@@ -292,7 +292,7 @@ public class AdministracaoViewModelTests : TesteDeViewModel
         await vm.AoAparecerAsync();
 
         Assert.True(vm.EmProfissionais);
-        Assert.Equal("Profissionais (2)", vm.TituloProfissionais);
+        Assert.Equal("Candidatos (2)", vm.TituloProfissionais);
         Assert.Equal("Empresas (1)", vm.TituloEmpresas);
         Assert.Equal("Vagas (2)", vm.TituloVagas);
     }
@@ -348,7 +348,7 @@ public class AdministracaoViewModelTests : TesteDeViewModel
         await vm.ExcluirProfissionalCommand.ExecuteAsync(vm.Profissionais[0]);
 
         Assert.Equal(["Não encontramos o que você procurou. Talvez tenha sido removido."], Plataforma.Avisos);
-        Assert.Equal("Profissionais (1)", vm.TituloProfissionais);
+        Assert.Equal("Candidatos (1)", vm.TituloProfissionais);
         Assert.False(vm.Excluindo);
     }
 

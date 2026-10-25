@@ -312,7 +312,7 @@ public class LoginViewModelTests : TesteDeViewModel
     {
         var vm = Criar();
 
-        Assert.Equal(["Profissional", "Empresa", "Administrador"], vm.ContasDemo.Select(c => c.Perfil));
+        Assert.Equal(["Candidato", "Empresa", "Administrador"], vm.ContasDemo.Select(c => c.Perfil));
         Assert.Contains(vm.ContasDemo, c => c.Email == "admin@demo.com");
     }
 }

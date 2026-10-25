@@ -26,7 +26,7 @@ O mesmo app roda no Windows, numa janela redimensionável, e é por onde empresa
 
 1. Extraia o zip (botão direito → **Extrair tudo**).
 2. Entre na pasta **Chateau Du Pet** e clique duas vezes em **Chateau Du Pet.exe**.
-3. No login, toque num dos cartões de **acesso rápido** (Profissional, Empresa ou Administrador) para entrar com a conta de demonstração.
+3. No login, toque num dos cartões de **acesso rápido** (Candidato, Empresa ou Administrador) para entrar com a conta de demonstração.
 
 ```
 Chateau Du Pet/
@@ -44,8 +44,8 @@ Chateau Du Pet/
 | Conta | Na prática |
 |---|---|
 | Empresa (`empresa@demo.com`) | **Minha área → + Publicar vaga** abre o formulário (título, experiência, tipo de registro, sexo, validade e descrição). Cada vaga tem **Editar** e **Ver candidatos**; tocar num candidato abre o currículo completo, com botões de e-mail e telefone |
-| Administrador (`admin@demo.com`) | **Minha área → Abrir painel de administração**: abas de Profissionais, Empresas e Vagas com contagem, busca (ignora acentos e maiúsculas), ver currículo/vaga e excluir com confirmação |
-| Profissional (`candidato@demo.com`) | O mesmo do celular: vagas, candidaturas e currículo |
+| Administrador (`admin@demo.com`) | **Minha área → Abrir painel de administração**: abas de Candidatos, Empresas e Vagas com contagem, busca (ignora acentos e maiúsculas), ver currículo/vaga e excluir com confirmação |
+| Candidato (`candidato@demo.com`) | O mesmo do celular: vagas, candidaturas e currículo |
 
 **Do desktop de 2021 para o atual:**
 
@@ -61,9 +61,9 @@ Chateau Du Pet/
 | Perfil | Funcionalidades |
 |---|---|
 | **Visitante** | Lista e busca vagas (por cargo, empresa ou cidade), vê os detalhes e compartilha |
-| **Profissional** | Tudo do visitante + se candidata e cancela candidaturas, acompanha as candidaturas e vê o próprio currículo (experiências e certificados) |
+| **Candidato** | Tudo do visitante + se candidata e cancela candidaturas, acompanha as candidaturas e vê o próprio currículo (experiências e certificados) |
 | **Empresa** | Publica, edita e exclui vagas; vê os candidatos de cada vaga e o currículo completo de cada um, com atalhos para e-mail e telefone |
-| **Administrador** | Painel com profissionais, empresas e vagas: busca, vê currículos e exclui cadastros (as vagas e candidaturas ligadas saem junto) |
+| **Administrador** | Painel com candidatos, empresas e vagas: busca, vê currículos e exclui cadastros (as vagas e candidaturas ligadas saem junto) |
 
 Detalhes que fazem diferença no uso:
 
@@ -79,7 +79,7 @@ Senha de todas: `demo1234` (os dados são fictícios e voltam ao original todo d
 
 | Perfil | E-mail |
 |---|---|
-| Profissional | `candidato@demo.com` |
+| Candidato | `candidato@demo.com` |
 | Empresa | `empresa@demo.com` |
 | Administrador | `admin@demo.com` |
 

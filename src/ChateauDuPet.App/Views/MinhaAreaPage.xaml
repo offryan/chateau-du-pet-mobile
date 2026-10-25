@@ -186,7 +186,7 @@
                         <Border IsVisible="{Binding EhAdministrador}" Style="{StaticResource Card}">
                             <VerticalStackLayout Spacing="12">
                                 <Label Style="{StaticResource TituloCard}" Text="Administração" />
-                                <Label Style="{StaticResource Legenda}" Text="Gerencie profissionais, empresas e vagas: busque, veja currículos e exclua cadastros." />
+                                <Label Style="{StaticResource Legenda}" Text="Gerencie candidatos, empresas e vagas: busque, veja currículos e exclua cadastros." />
                                 <Button Command="{Binding AbrirAdministracaoCommand}" Text="Abrir painel de administração" />
                             </VerticalStackLayout>
                         </Border>
