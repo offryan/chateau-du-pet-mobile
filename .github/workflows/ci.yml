@@ -89,18 +89,38 @@ jobs:
       - name: Workload do MAUI para Windows
         run: dotnet workload install maui-windows
 
-      # App avulso (sem instalador): tudo o que ele precisa vai junto na pasta,
-      # então basta extrair o zip e abrir o ChateauDuPet.App.exe
+      # App avulso (sem instalador): tudo o que ele precisa vai junto na pasta
       - name: Gera o app (Release)
         run: >
           dotnet publish src/ChateauDuPet.App -f net10.0-windows10.0.19041.0 -c Release
           -p:RuntimeIdentifierOverride=win-x64 -p:WindowsPackageType=None
           -p:SelfContained=true -p:WindowsAppSDKSelfContained=true
-          -o publicado
+          -o "pacote/Chateau Du Pet/app"
+
+      # O zip abre numa pasta só, com o iniciador e o LEIA-ME na frente e as centenas
+      # de arquivos do app guardadas em "app":
+      #   Chateau Du Pet/
+      #   ├── Chateau Du Pet.exe
+      #   ├── LEIA-ME.txt
+      #   └── app/
+      - name: Monta a pasta com o iniciador
+        shell: pwsh
+        run: |
+          $raiz = "pacote/Chateau Du Pet"
+          $icone = Get-ChildItem "$raiz/app" -Filter *.ico -Recurse | Select-Object -First 1
+          $argumentos = @(
+            "/nologo", "/target:winexe", "/optimize+", "/codepage:65001",
+            "/r:System.Windows.Forms.dll", "/out:$raiz/Chateau Du Pet.exe"
+          )
+          if ($icone) { $argumentos += "/win32icon:$($icone.FullName)" }
+          & "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe" @argumentos build/windows/Iniciar.cs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item build/windows/LEIA-ME.txt $raiz
+          Get-ChildItem $raiz | Format-Table Name, Length
 
       - name: Compacta em zip
         shell: pwsh
-        run: Compress-Archive -Path publicado/* -DestinationPath chateau-du-pet-windows.zip
+        run: Compress-Archive -Path "pacote/Chateau Du Pet" -DestinationPath chateau-du-pet-windows.zip
 
       - uses: actions/upload-artifact@v5
         with:

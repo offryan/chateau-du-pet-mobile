@@ -306,6 +306,15 @@ public class LoginViewModelTests : TesteDeViewModel
         Assert.Equal("felipe@exemplo.com", emailUsado);
         Assert.Equal(TipoUsuario.Empresa, Sessao.Usuario?.Tipo);
     }
+
+    [Fact]
+    public void Contas_de_demonstracao_cobrem_os_tres_perfis()
+    {
+        var vm = Criar();
+
+        Assert.Equal(["Profissional", "Empresa", "Administrador"], vm.ContasDemo.Select(c => c.Perfil));
+        Assert.Contains(vm.ContasDemo, c => c.Email == "admin@exemplo.com");
+    }
 }
 
 public class MinhaAreaViewModelTests : TesteDeViewModel

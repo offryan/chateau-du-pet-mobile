@@ -1,0 +1,22 @@
+CHATEAU DU PET PARA WINDOWS
+===========================
+
+Para abrir: clique duas vezes em "Chateau Du Pet.exe", nesta pasta.
+
+Não precisa instalar nada. A pasta "app" guarda os arquivos do aplicativo e
+precisa ficar ao lado do "Chateau Du Pet.exe". Para tirar do caminho, mova a
+pasta inteira "Chateau Du Pet" para onde preferir (por exemplo, Documentos)
+e crie um atalho na área de trabalho: botão direito em "Chateau Du Pet.exe"
+→ Mostrar mais opções → Enviar para → Área de trabalho (criar atalho).
+
+Se aparecer "O Windows protegeu o computador", clique em
+"Mais informações" e depois em "Executar assim mesmo". O aviso aparece porque
+o app não é assinado digitalmente.
+
+Contas de demonstração (senha de todas: demo1234)
+  Profissional:  jucelino@exemplo.com
+  Empresa:       felipe@exemplo.com
+  Administrador: admin@exemplo.com
+
+Requer Windows 10 (versão 1809 ou mais recente) ou Windows 11, 64 bits.
+Código-fonte e outras versões: https://github.com/offryan/chateau-du-pet-mobile

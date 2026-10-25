@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/f57e9775-f1a2-4dfa-a64c-0eb34ffdba9b
 
 > O APK não vem da Play Store, então o Android pede para permitir a instalação de fontes desconhecidas e o Play Protect pode mostrar "app não verificado". Toque em **Instalar mesmo assim**.
 
-💻 **Windows:** [chateau-du-pet-windows.zip](https://github.com/offryan/chateau-du-pet-mobile/releases/latest/download/chateau-du-pet-windows.zip) (Windows 10 ou 11, 64 bits). Não precisa instalar: extraia o zip e abra o `ChateauDuPet.App.exe`.
+💻 **Windows:** [chateau-du-pet-windows.zip](https://github.com/offryan/chateau-du-pet-mobile/releases/latest/download/chateau-du-pet-windows.zip) (Windows 10 ou 11, 64 bits). Não precisa instalar: extraia o zip e abra o **Chateau Du Pet.exe**, que fica na pasta extraída ao lado de um `LEIA-ME.txt` (os arquivos do app ficam guardados na subpasta `app`).
 
 > Como o app não é assinado, o Windows pode mostrar "O Windows protegeu o computador". Clique em **Mais informações → Executar assim mesmo**.
 
@@ -95,7 +95,7 @@ O app de 2021 era o template do Xamarin.Forms com dados fictícios fixos no cód
 | Bindings | Resolvidos em tempo de execução | Compilados (`x:DataType`) e XAML gerado em C# na compilação |
 | HTTP | — | `IHttpClientFactory` + Polly (novas tentativas e timeouts) |
 | JSON | — | `System.Text.Json` com geração de código (sem reflexão, compatível com trimming) |
-| Testes | Nenhum | 124 testes automatizados |
+| Testes | Nenhum | 125 testes automatizados |
 | Android alvo | API 30 | API 36 |
 
 ## 🧱 Arquitetura
