@@ -256,3 +256,8 @@ A cada push na `main`, o GitHub Actions roda os testes e gera o APK e o app Wind
 ---
 
 Projeto original (2021): app desktop (Windows Forms), portal Web Forms e o app Xamarin em [offryan/CHATEAU-DU-PET](https://github.com/offryan/CHATEAU-DU-PET).
+
+
+## 📄 Licença
+
+© 2021-2026 Ryan G. Santos. Todos os direitos reservados. O código está público apenas para portfólio e avaliação: não é permitido copiar, modificar, distribuir ou usar comercialmente sem autorização por escrito. Veja o arquivo [LICENSE](LICENSE).
